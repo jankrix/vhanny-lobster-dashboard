@@ -303,6 +303,17 @@ tr:last-child td { border-bottom: none; }
   <div class="footer">Data dikelola oleh Hermes Agent — diperbarui otomatis setiap ada input baru</div>
 </div>
 
+<!-- FILE MODAL -->
+<div class="modal-overlay" id="fileModal">
+  <div class="modal" style="max-width:900px;">
+    <button class="modal-close" onclick="closeFileModal()">&times;</button>
+    <h2 id="fileModalTitle">📄 Dokumen</h2>
+    <div style="background:#0a0e17;border-radius:8px;min-height:400px;display:flex;align-items:center;justify-content:center;" id="fileModalContent">
+      <p style="color:#6b7280;">Memuat...</p>
+    </div>
+  </div>
+</div>
+
 <!-- TAB: TRANSACTIONS -->
 <div id="tab-transactions" class="tab-content">
 
@@ -783,13 +794,19 @@ function renderTransactions() {
   tbody.innerHTML = tx.map(t => {
     const acct = DATA.chart_of_accounts[t.account_code];
     const acctName = acct ? acct.name : t.account_code;
-    // Get the short filename
-    const srcShort = t.source_file ? t.source_file.replace(/^\d{4}-\d{2}-\d{2} - /, '').replace(/ - ✅PROCESSED\.pdf$/, '') : '-';
-    // Build clickable link for PDF files
-    let srcCell = '-';
+    // Build short display name
+    let displayName = '-';
+    let fullName = t.source_file || '';
     if (t.source_file && t.source_file.match(/\.pdf$/)) {
+      // Extract short name: invoice number or description
+      const invMatch = t.source_file.match(/INV\d{5}/);
+      if (invMatch) {
+        displayName = invMatch[0];
+      } else {
+        displayName = t.source_file.replace(/^\d{4}-\d{2}-\d{2} - /, '').replace(/ - [✅]+PROCESSED\.pdf$/, '').replace(/ - BARU\.pdf$/, '');
+      }
       const rawUrl = 'https://raw.githubusercontent.com/jankrix/vhanny-lobster-dashboard/main/' + encodeURIComponent(t.source_file);
-      srcCell = `<a href="${rawUrl}" target="_blank" style="color:#3b82f6;text-decoration:underline;" title="${t.source_file}">${srcShort} ↗</a>`;
+      srcCell = `<a href="javascript:void(0)" onclick="openFileModal('${rawUrl.replace(/'/g, "\\'")}','${fullName.replace(/'/g, "\\'")}')" style="color:#3b82f6;text-decoration:underline;">${displayName} ↗</a>`;
     } else if (t.source_file) {
       srcCell = `<span style="color:#6b7280;font-size:11px;">${t.source_file}</span>`;
     }
@@ -845,6 +862,19 @@ function renderAmortization() {
       <td style="color:${statusColor};">${status}</td>
     </tr>`;
   }).join('');
+}
+
+// ═══════════════════════════════════════════
+// FILE MODAL
+// ═══════════════════════════════════════════
+function openFileModal(url, fullName) {
+  document.getElementById('fileModalTitle').textContent = '📄 ' + fullName;
+  document.getElementById('fileModalContent').innerHTML = '<iframe src="' + url + '" style="width:100%;height:75vh;border:none;border-radius:8px;"></iframe>';
+  document.getElementById('fileModal').classList.add('active');
+}
+function closeFileModal() {
+  document.getElementById('fileModal').classList.remove('active');
+  document.getElementById('fileModalContent').innerHTML = '<p style="color:#6b7280;">Memuat...</p>';
 }
 
 // Init
