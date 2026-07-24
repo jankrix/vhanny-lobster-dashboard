@@ -289,6 +289,15 @@ tr:last-child td { border-bottom: none; }
     </div>
   </div>
 
+  <!-- AMORTIZATION SCHEDULE -->
+  <div class="table-card" style="margin-bottom:24px;">
+    <h3>📆 Jadwal Penyusutan Sewa — Rp 75jt ÷ 7 Bulan</h3>
+    <table style="font-size:12px;">
+      <thead><tr><th>Bulan</th><th class="text-right">Beban Sewa</th><th class="text-right">Sisa Aset</th><th>Status</th></tr></thead>
+      <tbody id="amortTable"></tbody>
+    </table>
+  </div>
+
   <!-- FOOTER -->
   <div class="footer">Data dikelola oleh Hermes Agent — diperbarui otomatis setiap ada input baru</div>
 </div>
@@ -415,7 +424,8 @@ const DATA = {
     {id:"TRX-028",date:"2026-07-04",account_code:"5.04",description:"Pembelian Bekasi — 20kg @ Rp135rb",amount:2700000,type:"cogs",payment_status:"tempo",notes:"Jual 10kg @ Rp165rb (tempo)"},
     {id:"TRX-029",date:"2026-07-17",account_code:"4.02",description:"Penjualan eceran — 10kg @ Rp165rb",amount:1650000,type:"income",payment_status:"tempo",notes:"Belum dibayar"},
     {id:"TRX-030",date:"2026-07-17",account_code:"5.02",description:"Pembelian Boyolali 2 — 140kg @ Rp135rb",amount:18200000,type:"cogs",payment_status:"hutang",notes:"Perkiraan DP Rp3.25jt, hutang Rp14.75jt"},
-    {id:"TRX-031",date:"2026-07-21",account_code:"1.04",description:"Sewa perusahaan — Rp75jt (Jul 2026 - Jan 2027)",amount:75000000,type:"asset",payment_status:"lunas",notes:"Rp 10.714.286/bln. Jatuh tempo Jan 2027"}
+    {id:"TRX-031",date:"2026-07-21",account_code:"1.04",description:"Sewa perusahaan — Rp75jt (Jul 2026 - Jan 2027)",amount:75000000,type:"asset",payment_status:"lunas",notes:"Rp 10.714.286/bln. Jatuh tempo Jan 2027"},
+    {id:"TRX-032",date:"2026-07-31",account_code:"6.10",description:"Beban Sewa Juli 2026 (1/7)",amount:10714285,type:"expense",payment_status:"lunas",notes:"Penyusutan sewa dibayar dimuka"}
   ],
   inventory_notes: {
     stok_tercatat: [
@@ -478,9 +488,23 @@ function renderDashboard(tx) {
   // Stock total
   const totalStock = DATA.inventory_notes.stok_tercatat.reduce((s,i) => s + i.qty_kg, 0);
 
-  // KPI Cards
-  const soldKg = 244; // estimated from sales data
-  const avgHPP = 115000; // weighted average from all batches
+  // KPI Cards — handle prepaid sewa correctly
+  const totalAssetRaw = byType.asset.reduce((s,t) => s + t.amount, 0);
+  // Prepaid sewa: calculate remaining (full amount minus amortized months)
+  const prepaidTotal = 75000000;
+  const monthlySewa = 10714285;
+  const sewaStart = new Date(2026, 6, 1); // July 2026 (month is 0-indexed)
+  const now = new Date();
+  const monthsPassed = Math.max(0, Math.min(7,
+    (now.getFullYear() - sewaStart.getFullYear()) * 12 + (now.getMonth() - sewaStart.getMonth())
+  ));
+  const prepaidRemaining = Math.max(0, prepaidTotal - (monthsPassed * monthlySewa));
+  // Subtract the difference between full prepaid and remaining from total asset
+  const sewaAdjustment = prepaidTotal - prepaidRemaining;
+  const totalAsset = totalAssetRaw - sewaAdjustment;
+
+  const soldKg = 244;
+  const avgHPP = 115000;
   const estimatedCOGS = soldKg * avgHPP;
   const grossProfit = totalIncome - estimatedCOGS;
   const stockValue = totalCOGS - estimatedCOGS;
@@ -733,9 +757,48 @@ function renderTransactions() {
   document.getElementById('txCount').textContent = `Menampilkan ${tx.length} transaksi · Total: ${fmt(total)}`;
 }
 
+// ═══════════════════════════════════════════
+// AMORTIZATION SCHEDULE
+// ═══════════════════════════════════════════
+function renderAmortization() {
+  const total = 75000000;
+  const monthly = 10714285;
+  const months = [
+    {label:'Jul 2026', date:'2026-07-31', active:true},
+    {label:'Agu 2026', date:'2026-08-31'},
+    {label:'Sep 2026', date:'2026-09-30'},
+    {label:'Okt 2026', date:'2026-10-31'},
+    {label:'Nov 2026', date:'2026-11-30'},
+    {label:'Des 2026', date:'2026-12-31'},
+    {label:'Jan 2027', date:'2027-01-31'}
+  ];
+
+  const now = new Date();
+  const sewaStart = new Date(2026, 6, 1);
+
+  let remaining = total;
+  const tbody = document.querySelector('#amortTable');
+  tbody.innerHTML = months.map((m, i) => {
+    const isLast = i === 6;
+    const amount = isLast ? total - (monthly * 6) : monthly;
+    const thisMonth = new Date(2026, 6 + i, 1);
+    const isPast = thisMonth <= now;
+    remaining -= amount;
+    const status = isPast ? '✅ Dibebankan' : '⏳ Akan datang';
+    const statusColor = isPast ? '#22c55e' : '#6b7280';
+    return `<tr>
+      <td>${m.label}</td>
+      <td class="text-right" style="color:#ef4444;">−${fmt(amount)}</td>
+      <td class="text-right" style="color:${remaining > 0 ? '#06b6d4' : '#22c55e'};">${fmt(Math.max(0, remaining))}</td>
+      <td style="color:${statusColor};">${status}</td>
+    </tr>`;
+  }).join('');
+}
+
 // Init
 document.getElementById('lastUpdate').textContent = DATA.last_updated;
 renderDashboard(DATA.transactions);
+renderAmortization();
 </script>
 </body>
 </html>

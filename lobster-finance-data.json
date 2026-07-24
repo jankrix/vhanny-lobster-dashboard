@@ -18,37 +18,37 @@
       "description": "Hutang ke supplier lobster"
     },
     "4.01": {
-      "name": "Penjualan \u2014 Restoran",
+      "name": "Penjualan — Restoran",
       "type": "income",
       "description": "Penjualan lobster ke restoran"
     },
     "4.02": {
-      "name": "Penjualan \u2014 Eceran",
+      "name": "Penjualan — Eceran",
       "type": "income",
       "description": "Penjualan lobster langsung ke konsumen"
     },
     "4.03": {
-      "name": "Penjualan \u2014 Dollar/Ekspor",
+      "name": "Penjualan — Dollar/Ekspor",
       "type": "income",
       "description": "Penjualan dibayar dollar"
     },
     "5.01": {
-      "name": "Pembelian \u2014 Salatiga",
+      "name": "Pembelian — Salatiga",
       "type": "cogs",
       "description": "Pembelian lobster dari Salatiga"
     },
     "5.02": {
-      "name": "Pembelian \u2014 Boyolali",
+      "name": "Pembelian — Boyolali",
       "type": "cogs",
       "description": "Pembelian lobster dari Boyolali"
     },
     "5.03": {
-      "name": "Pembelian \u2014 Jogja",
+      "name": "Pembelian — Jogja",
       "type": "cogs",
       "description": "Pembelian lobster dari Jogja"
     },
     "5.04": {
-      "name": "Pembelian \u2014 Bekasi",
+      "name": "Pembelian — Bekasi",
       "type": "cogs",
       "description": "Pembelian lobster dari Bekasi"
     },
@@ -118,34 +118,34 @@
       "id": "TRX-001",
       "date": "2026-07-05",
       "account_code": "4.01",
-      "description": "Penjualan lobster ke Hakka Restoran \u2014 20kg",
+      "description": "Penjualan lobster ke Hakka Restoran — 20kg",
       "amount": 3600000,
       "type": "income",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-002",
       "date": "2026-07-06",
       "account_code": "4.01",
-      "description": "Penjualan lobster ke Hakka Restoran \u2014 60kg",
+      "description": "Penjualan lobster ke Hakka Restoran — 60kg",
       "amount": 10800000,
       "type": "income",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-003",
       "date": "2026-07-07",
       "account_code": "4.01",
-      "description": "Penjualan lobster ke Hakka Restoran \u2014 20kg",
+      "description": "Penjualan lobster ke Hakka Restoran — 20kg",
       "amount": 3800000,
       "type": "income",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-004",
@@ -156,7 +156,7 @@
       "type": "asset",
       "payment_status": "lunas",
       "notes": "Investasi awal",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-005",
@@ -167,7 +167,7 @@
       "type": "asset",
       "payment_status": "lunas",
       "notes": "Bagian dari sistem kolam",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-006",
@@ -178,7 +178,7 @@
       "type": "expense",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-007",
@@ -189,7 +189,7 @@
       "type": "asset",
       "payment_status": "lunas",
       "notes": "Alat tahan lama",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-008",
@@ -200,7 +200,7 @@
       "type": "asset",
       "payment_status": "lunas",
       "notes": "Bahan bangunan untuk pembuatan kolam",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-009",
@@ -211,7 +211,7 @@
       "type": "expense",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-010",
@@ -222,7 +222,7 @@
       "type": "expense",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-011",
@@ -233,7 +233,7 @@
       "type": "expense",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-012",
@@ -244,7 +244,7 @@
       "type": "expense",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-013",
@@ -255,7 +255,7 @@
       "type": "cogs",
       "payment_status": "lunas",
       "notes": "Stiker untuk label packing lobster",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-014",
@@ -266,7 +266,7 @@
       "type": "asset",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-015",
@@ -277,7 +277,7 @@
       "type": "cogs",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-016",
@@ -288,40 +288,40 @@
       "type": "cogs",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-017",
       "date": "2026-07-09",
       "account_code": "5.01",
-      "description": "Pembelian lobster Salatiga \u2014 40kg @ Rp 100.000/kg",
+      "description": "Pembelian lobster Salatiga — 40kg @ Rp 100.000/kg",
       "amount": 4000000,
       "type": "cogs",
       "payment_status": "lunas",
       "notes": "HPP Rp 100.000/kg, dijual Rp 180.000-190.000/kg",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-018",
       "date": "2026-07-10",
       "account_code": "5.01",
-      "description": "Pembelian lobster Salatiga \u2014 qty besar @ Rp 115.000/kg",
+      "description": "Pembelian lobster Salatiga — qty besar @ Rp 115.000/kg",
       "amount": 34500000,
       "type": "cogs",
       "payment_status": "dp",
       "notes": "DP Rp 20.000.000, sisa Rp 14.500.000. Dijual 60kg @ Rp 180.000 = Rp 10.800.000 (lunas) + 100kg @ Rp 180.000 = Rp 18.000.000 (lunas dibayar dollar)",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-019",
       "date": "2026-07-10",
       "account_code": "5.02",
-      "description": "Pembelian lobster Boyolali \u2014 400kg @ Rp 115.000/kg",
+      "description": "Pembelian lobster Boyolali — 400kg @ Rp 115.000/kg",
       "amount": 46000000,
       "type": "cogs",
       "payment_status": "hutang",
       "notes": "DP Rp 17.000.000, hutang Rp 29.000.000. HPP Rp 115.000/kg, jual Rp 165.000/kg. 68kg jual Rp 11.220.000 (lunas). Dibayar 180kg di Boyolali (dollar), 152kg di Salatiga (nitip)",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-020",
@@ -332,128 +332,139 @@
       "type": "expense",
       "payment_status": "lunas",
       "notes": "",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-021",
       "date": "2026-07-10",
       "account_code": "4.02",
-      "description": "Penjualan eceran \u2014 60kg @ Rp 180.000",
+      "description": "Penjualan eceran — 60kg @ Rp 180.000",
       "amount": 10800000,
       "type": "income",
       "payment_status": "lunas",
       "notes": "Dari batch Salatiga",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-022",
       "date": "2026-07-10",
       "account_code": "4.03",
-      "description": "Penjualan \u2014 100kg @ Rp 180.000 (dibayar dollar)",
+      "description": "Penjualan — 100kg @ Rp 180.000 (dibayar dollar)",
       "amount": 18000000,
       "type": "income",
       "payment_status": "lunas",
       "notes": "Dibayar dollar, dari batch Salatiga",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-023",
       "date": "2026-07-10",
       "account_code": "4.02",
-      "description": "Penjualan eceran \u2014 68kg @ Rp 165.000",
+      "description": "Penjualan eceran — 68kg @ Rp 165.000",
       "amount": 11220000,
       "type": "income",
       "payment_status": "lunas",
       "notes": "Dari batch Boyolali",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-024",
       "date": "2026-07-10",
       "account_code": "5.03",
-      "description": "Pembelian lobster Jogja \u2014 19kg @ \u00b1Rp 170.000/kg",
+      "description": "Pembelian lobster Jogja — 19kg @ ±Rp 170.000/kg",
       "amount": 3225000,
       "type": "cogs",
       "payment_status": "lunas",
       "notes": "Dijual 4kg @ Rp 450.000 = Rp 1.800.000 (cash lunas). 15kg masih di rumah.",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-025",
       "date": "2026-07-10",
       "account_code": "4.02",
-      "description": "Penjualan eceran \u2014 4kg @ Rp 450.000 (Jogja)",
+      "description": "Penjualan eceran — 4kg @ Rp 450.000 (Jogja)",
       "amount": 1800000,
       "type": "income",
       "payment_status": "lunas",
       "notes": "Cash lunas",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-026",
       "date": "2026-07-17",
       "account_code": "5.02",
-      "description": "Pembelian lobster Boyolali \u2014 10kg @ Rp 125.000/kg",
+      "description": "Pembelian lobster Boyolali — 10kg @ Rp 125.000/kg",
       "amount": 1250000,
       "type": "cogs",
       "payment_status": "lunas",
       "notes": "Dijual 2kg @ Rp 450.000 = Rp 900.000 (tempo). 6kg hidup, 2kg frozen di rumah.",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-027",
       "date": "2026-07-17",
       "account_code": "4.02",
-      "description": "Penjualan eceran \u2014 2kg @ Rp 450.000 (Boyolali)",
+      "description": "Penjualan eceran — 2kg @ Rp 450.000 (Boyolali)",
       "amount": 900000,
       "type": "income",
       "payment_status": "tempo",
       "notes": "Belum dibayar",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-028",
       "date": "2026-07-04",
       "account_code": "5.04",
-      "description": "Pembelian lobster Bekasi \u2014 20kg @ Rp 135.000/kg",
+      "description": "Pembelian lobster Bekasi — 20kg @ Rp 135.000/kg",
       "amount": 2700000,
       "type": "cogs",
       "payment_status": "tempo",
       "notes": "Campuran. Dijual 10kg @ Rp 165.000 = Rp 1.650.000 (tempo)",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-029",
       "date": "2026-07-17",
       "account_code": "4.02",
-      "description": "Penjualan eceran \u2014 10kg @ Rp 165.000 (Bekasi)",
+      "description": "Penjualan eceran — 10kg @ Rp 165.000 (Bekasi)",
       "amount": 1650000,
       "type": "income",
       "payment_status": "tempo",
       "notes": "Belum dibayar",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-030",
       "date": "2026-07-17",
       "account_code": "5.02",
-      "description": "Pembelian lobster Boyolali 2 \u2014 140kg @ Rp 135.000/kg",
+      "description": "Pembelian lobster Boyolali 2 — 140kg @ Rp 135.000/kg",
       "amount": 18200000,
       "type": "cogs",
       "payment_status": "hutang",
       "notes": "Data tidak lengkap. Perkiraan: DP Rp 3.250.000, hutang Rp 14.750.000. 17kg nitip di Salatiga.",
-      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+      "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
       "id": "TRX-031",
       "date": "2026-07-21",
       "account_code": "1.04",
-      "description": "Sewa perusahaan \u2014 Rp 75jt untuk 7 bulan (Jul 2026 - Jan 2027)",
+      "description": "Sewa perusahaan — Rp 75jt untuk 7 bulan (Jul 2026 - Jan 2027)",
       "amount": 75000000,
       "type": "asset",
       "payment_status": "lunas",
       "notes": "Jatuh tempo Jan 2027. Biaya per bulan: Rp 10.714.286",
       "source_file": "WhatsApp - VhanY 24 Jul 2026"
+    },
+    {
+      "id": "TRX-032",
+      "date": "2026-07-31",
+      "account_code": "6.10",
+      "description": "Beban Sewa Juli 2026 (1/7)",
+      "amount": 10714285,
+      "type": "expense",
+      "payment_status": "lunas",
+      "notes": "Penyusutan sewa dibayar dimuka — Rp 75jt ÷ 7",
+      "source_file": "Amortisasi otomatis"
     }
   ],
   "inventory_notes": {
@@ -499,6 +510,70 @@
         "creditor": "Supplier Boyolali (batch 3)",
         "amount": 14750000,
         "notes": "140kg @ Rp 135.000, perkiraan"
+      }
+    ]
+  },
+  "amortization": {
+    "account": "1.04",
+    "total": 75000000,
+    "period_months": 7,
+    "monthly": 10714285,
+    "schedule": [
+      {
+        "id": "AMORT-01",
+        "date": "2026-07-31",
+        "description": "Beban Sewa Juli 2026",
+        "amount": 10714285,
+        "remaining_before": 75000000,
+        "remaining_after": 64285715
+      },
+      {
+        "id": "AMORT-02",
+        "date": "2026-08-31",
+        "description": "Beban Sewa Agustus 2026",
+        "amount": 10714285,
+        "remaining_before": 64285715,
+        "remaining_after": 53571430
+      },
+      {
+        "id": "AMORT-03",
+        "date": "2026-09-30",
+        "description": "Beban Sewa September 2026",
+        "amount": 10714285,
+        "remaining_before": 53571430,
+        "remaining_after": 42857145
+      },
+      {
+        "id": "AMORT-04",
+        "date": "2026-10-31",
+        "description": "Beban Sewa Oktober 2026",
+        "amount": 10714285,
+        "remaining_before": 42857145,
+        "remaining_after": 32142860
+      },
+      {
+        "id": "AMORT-05",
+        "date": "2026-11-30",
+        "description": "Beban Sewa November 2026",
+        "amount": 10714285,
+        "remaining_before": 32142860,
+        "remaining_after": 21428575
+      },
+      {
+        "id": "AMORT-06",
+        "date": "2026-12-31",
+        "description": "Beban Sewa Desember 2026",
+        "amount": 10714285,
+        "remaining_before": 21428575,
+        "remaining_after": 10714290
+      },
+      {
+        "id": "AMORT-07",
+        "date": "2027-01-31",
+        "description": "Beban Sewa Januari 2027",
+        "amount": 10714290,
+        "remaining_before": 10714290,
+        "remaining_after": 0
       }
     ]
   }
