@@ -437,11 +437,11 @@
       "id": "TRX-030",
       "date": "2026-07-17",
       "account_code": "5.02",
-      "description": "Pembelian lobster Boyolali 2 — 140kg @ Rp 135.000/kg",
-      "amount": 18200000,
+      "description": "Pembelian Boyolali 2 — 155kg (total Rp20.150.000)",
+      "amount": 20150000,
       "type": "cogs",
-      "payment_status": "hutang",
-      "notes": "Data tidak lengkap. Perkiraan: DP Rp 3.250.000, hutang Rp 14.750.000. 17kg nitip di Salatiga.",
+      "payment_status": "lunas",
+      "notes": "DP Rp3.250.000 + pelunasan Rp16.900.000 = Rp20.150.000. LUNAS.",
       "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - ✅PROCESSED.pdf"
     },
     {
@@ -465,6 +465,17 @@
       "payment_status": "lunas",
       "notes": "Penyusutan sewa dibayar dimuka — Rp 75jt ÷ 7",
       "source_file": "Amortisasi otomatis"
+    },
+    {
+      "id": "TRX-033",
+      "date": "2026-07-23",
+      "account_code": "5.02",
+      "description": "Pelunasan Boyolali 2 — 155kg (sisa Rp16.900.000)",
+      "amount": 16900000,
+      "type": "cogs",
+      "payment_status": "lunas",
+      "notes": "Pelunasan setelah DP Rp3.250.000. Total Rp20.150.000 utk 155kg.",
+      "source_file": "WhatsApp - VhanY 23 Jul 2026"
     }
   ],
   "inventory_notes": {
@@ -505,11 +516,6 @@
         "creditor": "Supplier Boyolali (batch 1)",
         "amount": 29000000,
         "notes": "400kg @ Rp 115.000, sudah bayar DP 17jt"
-      },
-      {
-        "creditor": "Supplier Boyolali (batch 3)",
-        "amount": 14750000,
-        "notes": "140kg @ Rp 135.000, perkiraan"
       }
     ]
   },
