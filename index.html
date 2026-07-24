@@ -928,7 +928,8 @@ const DASHBOARD_PIN = '03lobster11'; // CHANGE THIS
 function checkPin() {
   const input = document.getElementById('pinInput');
   const error = document.getElementById('pinError');
-  if (input.value === DASHBOARD_PIN) {
+  error.textContent = '';
+  if (input.value.trim() === DASHBOARD_PIN) {
     document.getElementById('pinScreen').style.display = 'none';
     document.getElementById('dashboardMain').style.display = 'block';
     renderDashboard(DATA.transactions);
@@ -941,10 +942,8 @@ function checkPin() {
 }
 
 // Enter key support
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('pinInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') checkPin();
-  });
+document.getElementById('pinInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPin();
 });
 
 // Init — no longer auto-render, wait for PIN
