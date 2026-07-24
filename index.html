@@ -785,6 +785,14 @@ function renderTransactions() {
     const acctName = acct ? acct.name : t.account_code;
     // Get the short filename
     const srcShort = t.source_file ? t.source_file.replace(/^\d{4}-\d{2}-\d{2} - /, '').replace(/ - ✅PROCESSED\.pdf$/, '') : '-';
+    // Build clickable link for PDF files
+    let srcCell = '-';
+    if (t.source_file && t.source_file.match(/\.pdf$/)) {
+      const rawUrl = 'https://raw.githubusercontent.com/jankrix/vhanny-lobster-dashboard/main/' + encodeURIComponent(t.source_file);
+      srcCell = `<a href="${rawUrl}" target="_blank" style="color:#3b82f6;text-decoration:underline;" title="${t.source_file}">${srcShort} ↗</a>`;
+    } else if (t.source_file) {
+      srcCell = `<span style="color:#6b7280;font-size:11px;">${t.source_file}</span>`;
+    }
     return `<tr>
       <td style="color:#6b7280;">${t.id}</td>
       <td>${t.date}</td>
@@ -793,7 +801,7 @@ function renderTransactions() {
       <td class="text-right" style="color:${t.type === 'income' ? '#22c55e' : t.type === 'expense' ? '#ef4444' : t.type === 'cogs' ? '#3b82f6' : '#06b6d4'}">${fmt(t.amount)}</td>
       <td><span class="tx-type ${t.type}">${typeLabels[t.type] || t.type}</span></td>
       <td><span class="status-badge ${statusClasses[t.payment_status] || ''}">${statusLabels[t.payment_status] || t.payment_status}</span></td>
-      <td class="tx-source" title="${t.source_file || ''}">${srcShort}</td>
+      <td class="tx-source">${srcCell}</td>
       <td class="tx-notes">${t.notes || '-'}</td>
     </tr>`;
   }).join('');
