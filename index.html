@@ -798,11 +798,9 @@ function renderTransactions() {
     let displayName = '-';
     let fullName = t.source_file || '';
     if (t.source_file && t.source_file.match(/\.pdf$/)) {
-      // Extract invoice number for display, or just show icon
-      const invMatch = t.source_file.match(/INV\d{5}/);
-      displayName = invMatch ? invMatch[0] : '📄';
       const rawUrl = 'https://raw.githubusercontent.com/jankrix/vhanny-lobster-dashboard/main/' + encodeURIComponent(t.source_file);
-      srcCell = `<a href="javascript:void(0)" onclick="openFileModal('${rawUrl.replace(/'/g, "\\'")}','${fullName.replace(/'/g, "\\'")}')" style="color:#3b82f6;text-decoration:underline;">${displayName} ↗</a>`;
+      const githubUrl = 'https://github.com/jankrix/vhanny-lobster-dashboard/blob/main/' + encodeURIComponent(t.source_file);
+      srcCell = `<a href="javascript:void(0)" onclick="openFileModal('${rawUrl.replace(/'/g, "\\'")}','${githubUrl.replace(/'/g, "\\'")}','${fullName.replace(/'/g, "\\'")}')" style="color:#3b82f6;text-decoration:underline;">📄 ↗</a>`;
     } else if (t.source_file) {
       srcCell = `<span style="color:#6b7280;font-size:11px;">${t.source_file}</span>`;
     }
@@ -863,14 +861,13 @@ function renderAmortization() {
 // ═══════════════════════════════════════════
 // FILE MODAL
 // ═══════════════════════════════════════════
-function openFileModal(url, fullName) {
+function openFileModal(rawUrl, githubUrl, fullName) {
   document.getElementById('fileModalTitle').textContent = '📄 ' + fullName;
-  // Open raw PDF directly — browser native viewer handles it
   document.getElementById('fileModalContent').innerHTML = `
     <div style="text-align:center;padding:40px;">
       <p style="color:#6b7280;margin-bottom:20px;">File: ${fullName}</p>
-      <a href="${url}" target="_blank" style="display:inline-block;background:#3b82f6;color:white;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:16px;">📂 Buka PDF di Tab Baru</a>
-      <p style="color:#4b5563;font-size:12px;margin-top:12px;">Atau klik kanan → Save as untuk download</p>
+      <a href="${githubUrl}" target="_blank" style="display:inline-block;background:#3b82f6;color:white;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:16px;">📂 Lihat PDF</a>
+      <p style="color:#4b5563;font-size:12px;margin-top:12px;">Akan terbuka di tab baru — GitHub viewer menampilkan PDF langsung</p>
     </div>`;
   document.getElementById('fileModal').classList.add('active');
 }
