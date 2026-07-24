@@ -638,31 +638,34 @@ function closeValuation() {
 function calcValuation() {
   const method = document.getElementById('valuationMethod').value;
   const totalIncome = DATA.transactions.filter(t => t.type === 'income').reduce((s,t) => s + t.amount, 0);
-  const totalAsset = DATA.transactions.filter(t => t.type === 'asset').reduce((s,t) => s + t.amount, 0);
   const totalDebt = DATA.inventory_notes.hutang_tercatat.reduce((s,d) => s + d.amount, 0);
   const totalStock = DATA.inventory_notes.stok_tercatat.reduce((s,i) => s + i.qty_kg, 0);
 
+  // Tangible assets only (exclude prepaid sewa 1.04)
+  const tangibleAsset = DATA.transactions.filter(t => t.type === 'asset' && t.account_code !== '1.04').reduce((s,t) => s + t.amount, 0);
+
   let html = '';
   if (method === 'asset') {
-    const avgHPP = 120000; // estimated avg cost/kg
+    const avgHPP = 120000;
     const stockValue = totalStock * avgHPP;
-    const netAssets = totalAsset + stockValue - totalDebt;
+    const netAssets = tangibleAsset + stockValue - totalDebt;
     html = `
       <div class="result-box">
-        <div class="result-row"><span>Kolam + Freezer</span><span>${fmt(totalAsset)}</span></div>
+        <div class="result-row"><span>Aset Fisik (kolam, freezer, peralatan)</span><span>${fmt(tangibleAsset)}</span></div>
         <div class="result-row"><span>Nilai Stok (${totalStock}kg × Rp120rb estimasi)</span><span>${fmt(stockValue)}</span></div>
-        <div class="result-row" style="color:#06b6d4;"><span>Total Aset</span><span>${fmt(totalAsset + stockValue)}</span></div>
+        <div class="result-row" style="color:#06b6d4;"><span>Total Aset</span><span>${fmt(tangibleAsset + stockValue)}</span></div>
         <div class="result-row" style="color:#ef4444;"><span>Total Hutang</span><span>−${fmt(totalDebt)}</span></div>
-        <div class="result-row total"><span>Nilai Bersih</span><span style="color:${netAssets >= 0 ? '#22c55e' : '#ef4444'}">${fmt(netAssets)}</span></div>
+        <div class="result-row total"><span>Nilai Bersih (Likuidasi)</span><span style="color:${netAssets >= 0 ? '#22c55e' : '#ef4444'}">${fmt(netAssets)}</span></div>
       </div>
-      <p style="color:#4b5563;font-size:12px;margin-top:12px;">* Nilai likuidasi — jika bisnis dijual seluruhnya hari ini. Stok diestimasi dengan HPP rata-rata.</p>
+      <p style="color:#4b5563;font-size:12px;margin-top:12px;">* Nilai likuidasi — jika bisnis dijual semua hari ini. Sewa dibayar dimuka tidak termasuk.</p>
     `;
   } else if (method === 'revenue') {
-    const monthlyRev = totalIncome; // July so far
+    const monthlyRev = Math.round(totalIncome / 3 * 4.33); // ~3 minggu data → annualized bulanan
     const multiples = [2, 3, 5];
     html = `<div class="result-box">
-      <div class="result-row"><span>Pendapatan Bulanan (estimasi)</span><span style="color:#22c55e;">${fmt(monthlyRev)}</span></div>
-      <p style="color:#6b7280;font-size:13px;margin:12px 0;">Bisnis baru berjalan 3 minggu — angka di bawah sangat kasar.</p>
+      <div class="result-row"><span>Pendapatan (akumulasi 3 minggu)</span><span style="color:#22c55e;">${fmt(totalIncome)}</span></div>
+      <div class="result-row"><span>Estimasi Revenue Bulanan</span><span style="color:#22c55e;">${fmt(monthlyRev)}</span></div>
+      <p style="color:#6b7280;font-size:13px;margin:12px 0;">Bisnis baru — angka di bawah estimasi kasar.</p>
       <table style="width:100%;font-size:13px;">
         <tr><th style="color:#6b7280;">Multiple</th><th style="color:#6b7280;" class="text-right">Estimasi Valuasi</th><th style="color:#6b7280;">Keterangan</th></tr>
         ${multiples.map(m => {
@@ -674,9 +677,9 @@ function calcValuation() {
     </div>`;
   } else {
     // Simulasi Investor
-    const monthlyRev = totalIncome;
+    const monthlyRev = Math.round(totalIncome / 3 * 4.33);
     html = `
-      <label>Valuasi Bisnis (Rp)</label>
+      <label>Pre-money Valuation (Rp)</label>
       <input type="number" id="valAmount" value="${monthlyRev * 3}" oninput="calcInvestor()" />
       <label>Investor Masuk (Rp)</label>
       <input type="number" id="investAmount" value="25000000" oninput="calcInvestor()" />
@@ -691,13 +694,15 @@ function calcValuation() {
 function calcInvestor() {
   const val = parseInt(document.getElementById('valAmount').value) || 0;
   const inv = parseInt(document.getElementById('investAmount').value) || 0;
-  const pct = val > 0 ? (inv / val * 100) : 0;
+  const postVal = val + inv;
+  const pct = postVal > 0 ? (inv / postVal * 100) : 0;
   const founderPct = 100 - pct;
   document.getElementById('investorResult').innerHTML = `
-    <div class="result-row"><span>Valuasi Bisnis</span><span class="text-blue">${fmt(val)}</span></div>
+    <div class="result-row"><span>Pre-money Valuation</span><span class="text-blue">${fmt(val)}</span></div>
     <div class="result-row"><span>Investor Masuk</span><span class="text-green">${fmt(inv)}</span></div>
+    <div class="result-row"><span>Post-money Valuation</span><span style="color:#06b6d4;">${fmt(postVal)}</span></div>
     <div class="result-row total"><span>Investor Mendapat</span><span style="color:#f59e0b;">${pct.toFixed(1)}%</span></div>
-    <div class="result-row"><span>Pendiri (Founder) Tersisa</span><span style="color:#22c55e;">${founderPct.toFixed(1)}%</span></div>
+    <div class="result-row"><span>Founder Tersisa</span><span style="color:#22c55e;">${founderPct.toFixed(1)}%</span></div>
   `;
 }
 
