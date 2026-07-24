@@ -87,7 +87,39 @@ body {
 .tx-source { color: #4b5563; font-size: 11px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tx-notes { color: #6b7280; font-size: 11px; max-width: 250px; }
 
-/* KPI CARDS */
+/* PIN SCREEN */
+.pin-overlay {
+  position: fixed; inset: 0; background: #0a0e17;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.pin-box {
+  background: #111827; border: 1px solid #1f2937; border-radius: 16px;
+  padding: 40px; text-align: center; max-width: 360px; width: 90%;
+}
+.pin-box h1 {
+  font-size: 32px; margin-bottom: 4px;
+}
+.pin-box h2 {
+  font-size: 18px; color: #e0e6f0; margin-bottom: 4px;
+}
+.pin-box p {
+  color: #6b7280; font-size: 13px; margin-bottom: 24px;
+}
+.pin-input {
+  background: #1a1f2e; border: 2px solid #2a3040; color: #e0e6f0;
+  font-size: 28px; padding: 12px; border-radius: 10px; width: 140px;
+  text-align: center; letter-spacing: 8px; outline: none;
+}
+.pin-input:focus { border-color: #f97316; }
+.pin-error { color: #ef4444; font-size: 13px; margin-top: 12px; min-height: 20px; }
+.pin-submit {
+  display: block; width: 100%; margin-top: 16px;
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  color: white; border: none; padding: 12px; border-radius: 10px;
+  font-size: 16px; font-weight: 600; cursor: pointer;
+}
+.pin-submit:hover { opacity: 0.9; }
 .kpi-grid {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 14px; margin-bottom: 24px;
@@ -211,7 +243,19 @@ tr:last-child td { border-bottom: none; }
 </style>
 </head>
 <body>
-<div class="dashboard">
+<!-- PIN SCREEN -->
+<div class="pin-overlay" id="pinScreen">
+  <div class="pin-box">
+    <h1>🦞</h1>
+    <h2>Lobster Financial Control</h2>
+    <p>Masukkan PIN untuk mengakses dashboard</p>
+    <input type="password" class="pin-input" id="pinInput" maxlength="4" inputmode="numeric" autofocus />
+    <div class="pin-error" id="pinError"></div>
+    <button class="pin-submit" onclick="checkPin()">🔓 Buka Dashboard</button>
+  </div>
+</div>
+
+<div class="dashboard" style="display:none;" id="dashboardMain">
 
   <!-- HEADER -->
   <div class="header">
@@ -876,10 +920,35 @@ function closeFileModal() {
   document.getElementById('fileModalContent').innerHTML = '<p style="color:#6b7280;">Memuat...</p>';
 }
 
-// Init
+// ═══════════════════════════════════════════
+// PIN AUTH
+// ═══════════════════════════════════════════
+const DASHBOARD_PIN = '1234'; // CHANGE THIS
+
+function checkPin() {
+  const input = document.getElementById('pinInput');
+  const error = document.getElementById('pinError');
+  if (input.value === DASHBOARD_PIN) {
+    document.getElementById('pinScreen').style.display = 'none';
+    document.getElementById('dashboardMain').style.display = 'block';
+    renderDashboard(DATA.transactions);
+    renderAmortization();
+  } else {
+    error.textContent = '❌ PIN salah, coba lagi';
+    input.value = '';
+    input.focus();
+  }
+}
+
+// Enter key support
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('pinInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkPin();
+  });
+});
+
+// Init — no longer auto-render, wait for PIN
 document.getElementById('lastUpdate').textContent = DATA.last_updated;
-renderDashboard(DATA.transactions);
-renderAmortization();
 </script>
 </body>
 </html>
