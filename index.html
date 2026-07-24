@@ -490,7 +490,6 @@ function renderDashboard(tx) {
   const totalStock = DATA.inventory_notes.stok_tercatat.reduce((s,i) => s + i.qty_kg, 0);
 
   // KPI Cards — handle prepaid sewa correctly
-  const totalAssetRaw = byType.asset.reduce((s,t) => s + t.amount, 0);
   // Prepaid sewa: calculate remaining (full amount minus amortized months)
   const prepaidTotal = 75000000;
   const monthlySewa = 10714285;
