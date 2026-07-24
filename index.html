@@ -461,7 +461,7 @@ function renderDashboard(tx) {
   const totalIncome = byType.income.reduce((s,t) => s + t.amount, 0);
   const totalCOGS = byType.cogs.reduce((s,t) => s + t.amount, 0);
   const totalExpense = byType.expense.reduce((s,t) => s + t.amount, 0);
-  const totalAsset = byType.asset.reduce((s,t) => s + t.amount, 0);
+  const totalAssetRaw = byType.asset.reduce((s,t) => s + t.amount, 0);
 
   // Income by account
   const incomeByAcct = {};
