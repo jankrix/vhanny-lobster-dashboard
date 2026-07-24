@@ -869,7 +869,8 @@ function renderAmortization() {
 // ═══════════════════════════════════════════
 function openFileModal(url, fullName) {
   document.getElementById('fileModalTitle').textContent = '📄 ' + fullName;
-  document.getElementById('fileModalContent').innerHTML = '<iframe src="' + url + '" style="width:100%;height:75vh;border:none;border-radius:8px;"></iframe>';
+  const viewerUrl = 'https://docs.google.com/viewer?url=' + encodeURIComponent(url) + '&embedded=true';
+  document.getElementById('fileModalContent').innerHTML = '<iframe src="' + viewerUrl + '" style="width:100%;height:75vh;border:none;border-radius:8px;"></iframe>';
   document.getElementById('fileModal').classList.add('active');
 }
 function closeFileModal() {
