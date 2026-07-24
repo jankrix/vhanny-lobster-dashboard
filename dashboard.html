@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🦞 Lobster Financial Control</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0a0e17;
+  color: #e0e6f0;
+  padding: 20px;
+  min-height: 100vh;
+}
+.dashboard {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+}
+.header h1 {
+  font-size: 24px; font-weight: 700;
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.header-controls { display: flex; align-items: center; gap: 12px; }
+.header-controls select {
+  background: #1a1f2e; color: #e0e6f0; border: 1px solid #2a3040;
+  padding: 8px 16px; border-radius: 8px; font-size: 14px;
+}
+.badge {
+  background: #1a1f2e; padding: 6px 12px; border-radius: 8px;
+  font-size: 12px; color: #8892a4;
+}
+
+/* TABS */
+.tabs {
+  display: flex; gap: 4px; margin-bottom: 20px;
+  border-bottom: 1px solid #1f2937; padding-bottom: 0;
+}
+.tab-btn {
+  background: transparent; border: none; color: #6b7280;
+  padding: 10px 20px; font-size: 14px; cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: all 0.2s;
+}
+.tab-btn:hover { color: #e0e6f0; }
+.tab-btn.active { color: #f97316; border-bottom-color: #f97316; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* TRANSACTION TABLE */
+.tx-controls {
+  display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.tx-controls input, .tx-controls select {
+  background: #1a1f2e; border: 1px solid #2a3040; color: #e0e6f0;
+  padding: 8px 14px; border-radius: 8px; font-size: 13px;
+}
+.tx-controls input { flex: 1; min-width: 200px; }
+.tx-table-wrap {
+  overflow-x: auto; border: 1px solid #1f2937; border-radius: 10px;
+}
+.tx-table { width: 100%; font-size: 12px; border-collapse: collapse; }
+.tx-table th {
+  background: #0f1520; color: #6b7280; font-weight: 500;
+  padding: 10px 8px; text-align: left; white-space: nowrap;
+  border-bottom: 1px solid #1f2937;
+  position: sticky; top: 0;
+}
+.tx-table td {
+  padding: 8px; border-bottom: 1px solid #1a1f2e; white-space: nowrap;
+}
+.tx-table tr:hover { background: #1a1f2e; }
+.tx-type { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+.tx-type.income { background: #052e16; color: #22c55e; }
+.tx-type.cogs { background: #0c1929; color: #3b82f6; }
+.tx-type.expense { background: #2d0a0a; color: #ef4444; }
+.tx-type.asset { background: #0a1a1a; color: #06b6d4; }
+.tx-source { color: #4b5563; font-size: 11px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tx-notes { color: #6b7280; font-size: 11px; max-width: 250px; }
+
+/* KPI CARDS */
+.kpi-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px; margin-bottom: 24px;
+}
+.kpi-card {
+  background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+  padding: 18px; position: relative; overflow: hidden;
+}
+.kpi-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.kpi-card.income::before { background: #22c55e; }
+.kpi-card.profit::before { background: #3b82f6; }
+.kpi-card.debt::before { background: #ef4444; }
+.kpi-card.stock::before { background: #f59e0b; }
+.kpi-card.expense::before { background: #8b5cf6; }
+.kpi-card.asset::before { background: #06b6d4; }
+.kpi-label { font-size: 12px; color: #8892a4; margin-bottom: 6px; }
+.kpi-value { font-size: 22px; font-weight: 700; }
+.kpi-sub { font-size: 11px; color: #6b7280; margin-top: 4px; }
+.kpi-value.green { color: #22c55e; }
+.kpi-value.red { color: #ef4444; }
+.kpi-value.blue { color: #3b82f6; }
+.kpi-value.yellow { color: #f59e0b; }
+.kpi-value.purple { color: #8b5cf6; }
+.kpi-value.cyan { color: #06b6d4; }
+
+/* CHARTS GRID */
+.charts-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 24px;
+}
+@media (max-width: 900px) { .charts-grid { grid-template-columns: 1fr; } }
+.chart-card {
+  background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+  padding: 20px;
+}
+.chart-card h3 { font-size: 14px; color: #8892a4; margin-bottom: 16px; }
+.chart-card canvas { max-height: 280px; }
+
+/* TABLES GRID */
+.tables-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 24px;
+}
+@media (max-width: 900px) { .tables-grid { grid-template-columns: 1fr; } }
+.table-card {
+  background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+  padding: 20px;
+}
+.table-card h3 { font-size: 14px; color: #8892a4; margin-bottom: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; color: #6b7280; font-weight: 500; padding: 8px 4px; border-bottom: 1px solid #1f2937; }
+td { padding: 8px 4px; border-bottom: 1px solid #1a1f2e; }
+tr:last-child td { border-bottom: none; }
+.text-right { text-align: right; }
+.text-green { color: #22c55e; }
+.text-red { color: #ef4444; }
+.text-yellow { color: #f59e0b; }
+.text-blue { color: #3b82f6; }
+.status-badge {
+  display: inline-block; padding: 2px 8px; border-radius: 4px;
+  font-size: 11px; font-weight: 500;
+}
+.status-lunas { background: #052e16; color: #22c55e; }
+.status-tempo { background: #1c1917; color: #f59e0b; }
+.status-hutang { background: #2d0a0a; color: #ef4444; }
+.status-dp { background: #0c1929; color: #3b82f6; }
+
+/* INVENTORY CARD */
+.inventory-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 24px;
+}
+@media (max-width: 900px) { .inventory-grid { grid-template-columns: 1fr; } }
+
+/* VALUATION BUTTON */
+.action-bar {
+  display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 20px;
+}
+.btn-valuation {
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  color: white; border: none; padding: 12px 24px; border-radius: 10px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-valuation:hover { opacity: 0.9; }
+
+/* FOOTER */
+.footer {
+  text-align: center; padding: 16px; color: #4b5563; font-size: 12px;
+}
+
+/* MODAL */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+  z-index: 100; align-items: center; justify-content: center;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: #111827; border: 1px solid #1f2937; border-radius: 16px;
+  padding: 32px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto;
+}
+.modal h2 { font-size: 20px; margin-bottom: 20px; }
+.modal-close {
+  float: right; background: none; border: none; color: #6b7280;
+  font-size: 24px; cursor: pointer;
+}
+.modal-close:hover { color: #e0e6f0; }
+.modal label { display: block; color: #8892a4; font-size: 13px; margin-bottom: 4px; margin-top: 16px; }
+.modal input, .modal select {
+  width: 100%; background: #1a1f2e; border: 1px solid #2a3040;
+  color: #e0e6f0; padding: 10px 14px; border-radius: 8px; font-size: 14px;
+}
+.modal .result-box {
+  background: #0a0e17; border-radius: 8px; padding: 16px; margin-top: 16px;
+}
+.modal .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
+.modal .result-row.total { border-top: 1px solid #1f2937; margin-top: 8px; padding-top: 12px; font-weight: 700; font-size: 16px; }
+</style>
+</head>
+<body>
+<div class="dashboard">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🦞 Lobster Financial Control</h1>
+    <div class="header-controls">
+      <select id="monthFilter" onchange="filterData()">
+        <option value="all">Semua Bulan</option>
+        <option value="2026-07" selected>Juli 2026</option>
+      </select>
+      <span class="badge" id="lastUpdate">24 Jul 2026</span>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('transactions')">📋 Daftar Transaksi</button>
+  </div>
+
+  <!-- TAB: DASHBOARD -->
+  <div id="tab-dashboard" class="tab-content active">
+
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <button class="btn-valuation" onclick="openValuation()">🧮 Kalkulator Valuasi</button>
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="kpi-grid" id="kpiGrid"></div>
+
+  <!-- CHARTS -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>📊 Pendapatan per Sumber</h3>
+      <canvas id="revenueChart"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>📉 Biaya per Kategori</h3>
+      <canvas id="expenseChart"></canvas>
+    </div>
+  </div>
+
+  <!-- TABLES -->
+  <div class="tables-grid">
+    <div class="table-card">
+      <h3>💰 Margin per Supplier</h3>
+      <table id="marginTable">
+        <thead><tr><th>Supplier</th><th>HPP/kg</th><th>Jual/kg</th><th class="text-right">Margin</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="table-card">
+      <h3>⏳ Status Pembayaran</h3>
+      <table id="paymentTable">
+        <thead><tr><th>Item</th><th class="text-right">Nominal</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- INVENTORY -->
+  <div class="inventory-grid">
+    <div class="table-card">
+      <h3>📦 Stok Lobster</h3>
+      <table id="stockTable">
+        <thead><tr><th>Lokasi</th><th class="text-right">Kg</th><th>Keterangan</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="table-card">
+      <h3>⚠️ Hutang Supplier</h3>
+      <table id="debtTable">
+        <thead><tr><th>Supplier</th><th class="text-right">Sisa Hutang</th><th>Keterangan</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">Data dikelola oleh Hermes Agent — diperbarui otomatis setiap ada input baru</div>
+</div>
+
+<!-- TAB: TRANSACTIONS -->
+<div id="tab-transactions" class="tab-content">
+
+  <div class="tx-controls">
+    <input type="text" id="txSearch" placeholder="🔍 Cari transaksi..." oninput="renderTransactions()" />
+    <select id="txTypeFilter" onchange="renderTransactions()">
+      <option value="all">Semua Tipe</option>
+      <option value="income">💰 Pendapatan</option>
+      <option value="cogs">📦 Pembelian</option>
+      <option value="expense">💸 Biaya</option>
+      <option value="asset">🏗️ Aset</option>
+    </select>
+    <select id="txStatusFilter" onchange="renderTransactions()">
+      <option value="all">Semua Status</option>
+      <option value="lunas">✅ Lunas</option>
+      <option value="tempo">⏳ Tempo</option>
+      <option value="hutang">⚠️ Hutang</option>
+      <option value="dp">💳 DP</option>
+    </select>
+  </div>
+
+  <div class="tx-table-wrap">
+    <table class="tx-table" id="txTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tanggal</th>
+          <th>Deskripsi</th>
+          <th>Akun</th>
+          <th class="text-right">Jumlah</th>
+          <th>Tipe</th>
+          <th>Status</th>
+          <th>Sumber File</th>
+          <th>Catatan</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div style="color:#6b7280;font-size:12px;margin-top:12px;text-align:center;" id="txCount"></div>
+</div>
+
+<!-- VALUATION MODAL -->
+<div class="modal-overlay" id="valuationModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeValuation()">&times;</button>
+    <h2>🧮 Kalkulator Valuasi</h2>
+    <p style="color:#6b7280;font-size:13px;">Bisnis baru berjalan ±3 minggu — valuasi di bawah adalah estimasi kasar.</p>
+
+    <label>Metode Valuasi</label>
+    <select id="valuationMethod" onchange="calcValuation()">
+      <option value="asset">Asset-Based (Nilai Bersih)</option>
+      <option value="revenue">Revenue Multiple</option>
+      <option value="investor">Simulasi Investor Masuk</option>
+    </select>
+
+    <div id="valuationResult"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA — langsung embedded dari JSON file
+// ═══════════════════════════════════════════
+const DATA = {
+  client: "Lobster Restoran Semarang",
+  last_updated: "2026-07-24",
+  chart_of_accounts: {
+    "4.01": { name: "Penjualan — Restoran", type: "income" },
+    "4.02": { name: "Penjualan — Eceran", type: "income" },
+    "4.03": { name: "Penjualan — Dollar/Ekspor", type: "income" },
+    "5.01": { name: "Pembelian — Salatiga", type: "cogs" },
+    "5.02": { name: "Pembelian — Boyolali", type: "cogs" },
+    "5.03": { name: "Pembelian — Jogja", type: "cogs" },
+    "5.04": { name: "Pembelian — Bekasi", type: "cogs" },
+    "5.05": { name: "Biaya Packing", type: "cogs" },
+    "5.06": { name: "Biaya Transportasi Beli", type: "cogs" },
+    "6.01": { name: "Transportasi", type: "expense" },
+    "6.02": { name: "Tenaga Kerja", type: "expense" },
+    "6.03": { name: "Konsumsi TK", type: "expense" },
+    "6.04": { name: "Perlengkapan", type: "expense" },
+    "6.06": { name: "Biaya Lain-lain", type: "expense" },
+    "6.07": { name: "Denda & Tilang", type: "expense" },
+    "6.09": { name: "Biaya Packing", type: "expense" },
+    "1.01": { name: "Kolam (Aset)", type: "asset" },
+    "1.02": { name: "Freezer (Aset)", type: "asset" },
+    "1.03": { name: "Peralatan", type: "asset" },
+    "2.01": { name: "Hutang Supplier", type: "liability" }
+  },
+  transactions: [
+    {id:"TRX-001",date:"2026-07-05",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 20kg",amount:3600000,type:"income",payment_status:"lunas",notes:""},
+    {id:"TRX-002",date:"2026-07-06",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 60kg",amount:10800000,type:"income",payment_status:"lunas",notes:""},
+    {id:"TRX-003",date:"2026-07-07",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 20kg",amount:3800000,type:"income",payment_status:"lunas",notes:""},
+    {id:"TRX-004",date:"2026-07-01",account_code:"1.01",description:"2 kolam ukuran 4x3",amount:10250000,type:"asset",payment_status:"lunas",notes:"Investasi awal"},
+    {id:"TRX-005",date:"2026-07-01",account_code:"1.01",description:"Paranet, kabel aerator (sistem kolam)",amount:276000,type:"asset",payment_status:"lunas",notes:"Bagian dari sistem kolam"},
+    {id:"TRX-006",date:"2026-07-01",account_code:"6.09",description:"Plastik sealer",amount:50000,type:"expense",payment_status:"lunas",notes:""},
+    {id:"TRX-007",date:"2026-07-01",account_code:"1.03",description:"Alat sealer",amount:258740,type:"asset",payment_status:"lunas",notes:"Alat untuk packing lobster — Capex"},
+    {id:"TRX-008",date:"2026-07-01",account_code:"1.01",description:"Semen, pasir, paralon (bahan bangun kolam)",amount:411000,type:"asset",payment_status:"lunas",notes:"Bahan bangunan pembuatan kolam"},
+    {id:"TRX-009",date:"2026-07-01",account_code:"6.02",description:"Bayar tukang",amount:300000,type:"expense",payment_status:"lunas",notes:""},
+    {id:"TRX-010",date:"2026-07-01",account_code:"6.03",description:"Makan tukang + rokok",amount:404400,type:"expense",payment_status:"lunas",notes:""},
+    {id:"TRX-011",date:"2026-07-01",account_code:"6.06",description:"Kebutuhan lainnya",amount:500000,type:"expense",payment_status:"lunas",notes:""},
+    {id:"TRX-012",date:"2026-07-01",account_code:"6.07",description:"Kena tilang",amount:300000,type:"expense",payment_status:"lunas",notes:""},
+    {id:"TRX-013",date:"2026-07-01",account_code:"5.05",description:"Stiker (packing/label)",amount:192000,type:"cogs",payment_status:"lunas",notes:"Stiker untuk label packing lobster"},
+    {id:"TRX-014",date:"2026-07-01",account_code:"1.02",description:"Freezer",amount:2000000,type:"asset",payment_status:"lunas",notes:""},
+    {id:"TRX-015",date:"2026-07-01",account_code:"5.06",description:"Uang jalan Boyolali bolak-balik",amount:500000,type:"cogs",payment_status:"lunas",notes:""},
+    {id:"TRX-016",date:"2026-07-01",account_code:"5.05",description:"Packing",amount:200000,type:"cogs",payment_status:"lunas",notes:""},
+    {id:"TRX-017",date:"2026-07-09",account_code:"5.01",description:"Pembelian Salatiga — 40kg @ Rp100rb",amount:4000000,type:"cogs",payment_status:"lunas",notes:"HPP Rp100rb, jual Rp180-190rb"},
+    {id:"TRX-018",date:"2026-07-10",account_code:"5.01",description:"Pembelian Salatiga — qty besar @ Rp115rb",amount:34500000,type:"cogs",payment_status:"dp",notes:"DP Rp20jt, sisa Rp14.5jt"},
+    {id:"TRX-019",date:"2026-07-10",account_code:"5.02",description:"Pembelian Boyolali — 400kg @ Rp115rb",amount:46000000,type:"cogs",payment_status:"hutang",notes:"DP Rp17jt, hutang Rp29jt"},
+    {id:"TRX-020",date:"2026-07-01",account_code:"6.01",description:"Uang jalan (operasional)",amount:500000,type:"expense",payment_status:"lunas",notes:""},
+    {id:"TRX-021",date:"2026-07-10",account_code:"4.02",description:"Penjualan eceran — 60kg @ Rp180rb",amount:10800000,type:"income",payment_status:"lunas",notes:"Dari batch Salatiga"},
+    {id:"TRX-022",date:"2026-07-10",account_code:"4.03",description:"Penjualan — 100kg @ Rp180rb (dollar)",amount:18000000,type:"income",payment_status:"lunas",notes:"Dibayar dollar"},
+    {id:"TRX-023",date:"2026-07-10",account_code:"4.02",description:"Penjualan eceran — 68kg @ Rp165rb",amount:11220000,type:"income",payment_status:"lunas",notes:"Dari batch Boyolali"},
+    {id:"TRX-024",date:"2026-07-10",account_code:"5.03",description:"Pembelian Jogja — 19kg @ ±Rp170rb",amount:3225000,type:"cogs",payment_status:"lunas",notes:"Jual 4kg @ Rp450rb = Rp1.8jt, 15kg di rumah"},
+    {id:"TRX-025",date:"2026-07-10",account_code:"4.02",description:"Penjualan eceran — 4kg @ Rp450rb (Jogja)",amount:1800000,type:"income",payment_status:"lunas",notes:"Cash lunas"},
+    {id:"TRX-026",date:"2026-07-17",account_code:"5.02",description:"Pembelian Boyolali — 10kg @ Rp125rb",amount:1250000,type:"cogs",payment_status:"lunas",notes:"Jual 2kg @ Rp450rb (tempo), 6kg hidup + 2kg frozen"},
+    {id:"TRX-027",date:"2026-07-17",account_code:"4.02",description:"Penjualan eceran — 2kg @ Rp450rb",amount:900000,type:"income",payment_status:"tempo",notes:"Belum dibayar"},
+    {id:"TRX-028",date:"2026-07-04",account_code:"5.04",description:"Pembelian Bekasi — 20kg @ Rp135rb",amount:2700000,type:"cogs",payment_status:"tempo",notes:"Jual 10kg @ Rp165rb (tempo)"},
+    {id:"TRX-029",date:"2026-07-17",account_code:"4.02",description:"Penjualan eceran — 10kg @ Rp165rb",amount:1650000,type:"income",payment_status:"tempo",notes:"Belum dibayar"},
+    {id:"TRX-030",date:"2026-07-17",account_code:"5.02",description:"Pembelian Boyolali 2 — 140kg @ Rp135rb",amount:18200000,type:"cogs",payment_status:"hutang",notes:"Perkiraan DP Rp3.25jt, hutang Rp14.75jt"}
+  ],
+  inventory_notes: {
+    stok_tercatat: [
+      {item:"Lobster hidup (rumah)",qty_kg:6,source:"Sisa Boyolali 10kg"},
+      {item:"Lobster frozen (rumah)",qty_kg:2,source:"Sisa Boyolali 10kg"},
+      {item:"Lobster (rumah)",qty_kg:15,source:"Sisa Jogja 19kg"},
+      {item:"Lobster (Salatiga — nitip)",qty_kg:152,source:"Sisa Boyolali 400kg"},
+      {item:"Lobster (Boyolali — nitip)",qty_kg:120,source:"Sisa Boyolali 140kg"},
+      {item:"Lobster (Salatiga — nitip)",qty_kg:17,source:"Sisa Boyolali 140kg"}
+    ],
+    hutang_tercatat: [
+      {creditor:"Supplier Boyolali (batch 1)",amount:29000000,notes:"400kg @ Rp115rb, DP 17jt"},
+      {creditor:"Supplier Boyolali (batch 3)",amount:14750000,notes:"140kg @ Rp135rb, estimasi"}
+    ]
+  }
+};
+
+const fmt = (n) => 'Rp ' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+function filterData() {
+  const f = document.getElementById('monthFilter').value;
+  let tx = DATA.transactions;
+  if (f !== 'all') tx = tx.filter(t => t.date.startsWith(f));
+  renderDashboard(tx);
+}
+
+function renderDashboard(tx) {
+  // Group by type and account
+  const byType = { income: [], cogs: [], expense: [], asset: [] };
+  tx.forEach(t => { if (byType[t.type]) byType[t.type].push(t); });
+
+  const totalIncome = byType.income.reduce((s,t) => s + t.amount, 0);
+  const totalCOGS = byType.cogs.reduce((s,t) => s + t.amount, 0);
+  const totalExpense = byType.expense.reduce((s,t) => s + t.amount, 0);
+  const totalAsset = byType.asset.reduce((s,t) => s + t.amount, 0);
+
+  // Income by account
+  const incomeByAcct = {};
+  byType.income.forEach(t => {
+    const name = DATA.chart_of_accounts[t.account_code]?.name || t.account_code;
+    incomeByAcct[name] = (incomeByAcct[name] || 0) + t.amount;
+  });
+
+  // Expense by account (for chart)
+  const expenseByAcct = {};
+  byType.expense.forEach(t => {
+    const name = DATA.chart_of_accounts[t.account_code]?.name || t.account_code;
+    expenseByAcct[name] = (expenseByAcct[name] || 0) + t.amount;
+  });
+
+  // Payment status tracking
+  const incomePaid = byType.income.filter(t => t.payment_status === 'lunas').reduce((s,t) => s + t.amount, 0);
+  const incomeOutstanding = byType.income.filter(t => t.payment_status !== 'lunas').reduce((s,t) => s + t.amount, 0);
+  const cogsPaid = byType.cogs.filter(t => t.payment_status === 'lunas' || t.payment_status === 'dp').reduce((s,t) => s + t.amount, 0);
+  const cogsDebt = byType.cogs.filter(t => t.payment_status === 'hutang' || t.payment_status === 'tempo').reduce((s,t) => s + t.amount, 0);
+
+  // Total debt from inventory notes
+  const totalDebt = DATA.inventory_notes.hutang_tercatat.reduce((s,d) => s + d.amount, 0);
+
+  // Stock total
+  const totalStock = DATA.inventory_notes.stok_tercatat.reduce((s,i) => s + i.qty_kg, 0);
+
+  // KPI Cards
+  const soldKg = 244; // estimated from sales data
+  const avgHPP = 115000; // weighted average from all batches
+  const estimatedCOGS = soldKg * avgHPP;
+  const grossProfit = totalIncome - estimatedCOGS;
+  const stockValue = totalCOGS - estimatedCOGS;
+
+  document.getElementById('kpiGrid').innerHTML = `
+    <div class="kpi-card income"><div class="kpi-label">Pendapatan</div>
+      <div class="kpi-value green">${fmt(totalIncome)}</div>
+      <div class="kpi-sub">${byType.income.length} transaksi</div></div>
+    <div class="kpi-card profit"><div class="kpi-label">Laba Kotor (terjual)*</div>
+      <div class="kpi-value blue">${fmt(grossProfit)}</div>
+      <div class="kpi-sub">Pendapatan − HPP ±${soldKg}kg terjual</div></div>
+    <div class="kpi-card stock"><div class="kpi-label">Nilai Stok (belum laku)</div>
+      <div class="kpi-value yellow">${fmt(stockValue)}</div>
+      <div class="kpi-sub">±${totalStock}kg + stok lain</div></div>
+    <div class="kpi-card expense"><div class="kpi-label">Biaya Operasional</div>
+      <div class="kpi-value purple">${fmt(totalExpense)}</div>
+      <div class="kpi-sub">${byType.expense.length} transaksi</div></div>
+    <div class="kpi-card debt"><div class="kpi-label">Hutang Supplier</div>
+      <div class="kpi-value red">${fmt(totalDebt)}</div>
+      <div class="kpi-sub">${DATA.inventory_notes.hutang_tercatat.length} supplier</div></div>
+    <div class="kpi-card asset"><div class="kpi-label">Aset Tetap</div>
+      <div class="kpi-value cyan">${fmt(totalAsset)}</div>
+      <div class="kpi-sub">Kolam + Freezer + Peralatan</div></div>
+  `;
+
+  // CHART: Revenue by Source
+  const revCtx = document.getElementById('revenueChart').getContext('2d');
+  const revColors = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6'];
+  if (window.revChart) window.revChart.destroy();
+  window.revChart = new Chart(revCtx, {
+    type: 'bar',
+    data: {
+      labels: Object.keys(incomeByAcct),
+      datasets: [{
+        data: Object.values(incomeByAcct),
+        backgroundColor: revColors.slice(0, Object.keys(incomeByAcct).length),
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: v => 'Rp' + (v/1000000).toFixed(1) + 'jt', color: '#6b7280' } },
+        x: { ticks: { color: '#8892a4' } }
+      }
+    }
+  });
+
+  // CHART: Expense by Category
+  const expCtx = document.getElementById('expenseChart').getContext('2d');
+  const expLabels = Object.keys(expenseByAcct);
+  const expValues = Object.values(expenseByAcct);
+  if (window.expChart) window.expChart.destroy();
+  window.expChart = new Chart(expCtx, {
+    type: 'bar',
+    data: {
+      labels: expLabels,
+      datasets: [{
+        data: expValues,
+        backgroundColor: ['#8b5cf6','#ec4899','#f59e0b','#ef4444','#06b6d4','#84cc16','#f97316','#14b8a6'],
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: v => 'Rp' + (v/1000).toFixed(0) + 'rb', color: '#6b7280' } },
+        x: { ticks: { color: '#8892a4' } }
+      }
+    }
+  });
+
+  // TABLE: Margin Analysis
+  const margins = [
+    {supplier:'Salatiga', hpp:'100.000 – 115.000', jual:'180.000 – 190.000', margin:'+56 – 64%'},
+    {supplier:'Boyolali', hpp:'115.000 – 135.000', jual:'165.000 – 450.000', margin:'+30 – 233%'},
+    {supplier:'Jogja', hpp:'~170.000', jual:'450.000', margin:'+165%'},
+    {supplier:'Bekasi', hpp:'135.000', jual:'165.000', margin:'+22%'}
+  ];
+  document.querySelector('#marginTable tbody').innerHTML = margins.map(m =>
+    `<tr><td>${m.supplier}</td><td>${m.hpp}</td><td>${m.jual}</td><td class="text-right text-green">${m.margin}</td></tr>`
+  ).join('');
+
+  // TABLE: Payment Status
+  const payItems = [];
+  // Income receivables
+  byType.income.filter(t => t.payment_status !== 'lunas').forEach(t => {
+    payItems.push({label: t.description, amount: t.amount, status: t.payment_status, type: 'piutang'});
+  });
+  // Debt items
+  DATA.inventory_notes.hutang_tercatat.forEach(d => {
+    payItems.push({label: d.creditor, amount: d.amount, status: 'hutang', type: 'hutang'});
+  });
+  document.querySelector('#paymentTable tbody').innerHTML = payItems.map(p => {
+    const cls = p.status === 'hutang' || p.status === 'tempo' ? 'text-red' : 'text-yellow';
+    const badgeCls = p.status === 'hutang' ? 'status-hutang' : 'status-tempo';
+    return `<tr>
+      <td>${p.label}</td>
+      <td class="text-right ${cls}">${fmt(p.amount)}</td>
+      <td><span class="status-badge ${badgeCls}">${p.status.toUpperCase()}</span></td>
+    </tr>`;
+  }).join('');
+
+  if (payItems.length === 0) {
+    document.querySelector('#paymentTable tbody').innerHTML = '<tr><td colspan="3" style="text-align:center;color:#6b7280;">Belum ada data pembayaran tertunda</td></tr>';
+  }
+
+  // TABLE: Stock
+  document.querySelector('#stockTable tbody').innerHTML = DATA.inventory_notes.stok_tercatat.map(s =>
+    `<tr><td>${s.item}</td><td class="text-right text-yellow">${s.qty_kg} kg</td><td style="color:#6b7280;">${s.source}</td></tr>`
+  ).join('');
+
+  // TABLE: Debt
+  document.querySelector('#debtTable tbody').innerHTML = DATA.inventory_notes.hutang_tercatat.map(d =>
+    `<tr><td>${d.creditor}</td><td class="text-right text-red">${fmt(d.amount)}</td><td style="color:#6b7280;">${d.notes}</td></tr>`
+  ).join('');
+}
+
+function openValuation() {
+  document.getElementById('valuationModal').classList.add('active');
+  calcValuation();
+}
+function closeValuation() {
+  document.getElementById('valuationModal').classList.remove('active');
+}
+
+function calcValuation() {
+  const method = document.getElementById('valuationMethod').value;
+  const totalIncome = DATA.transactions.filter(t => t.type === 'income').reduce((s,t) => s + t.amount, 0);
+  const totalAsset = DATA.transactions.filter(t => t.type === 'asset').reduce((s,t) => s + t.amount, 0);
+  const totalDebt = DATA.inventory_notes.hutang_tercatat.reduce((s,d) => s + d.amount, 0);
+  const totalStock = DATA.inventory_notes.stok_tercatat.reduce((s,i) => s + i.qty_kg, 0);
+
+  let html = '';
+  if (method === 'asset') {
+    const avgHPP = 120000; // estimated avg cost/kg
+    const stockValue = totalStock * avgHPP;
+    const netAssets = totalAsset + stockValue - totalDebt;
+    html = `
+      <div class="result-box">
+        <div class="result-row"><span>Kolam + Freezer</span><span>${fmt(totalAsset)}</span></div>
+        <div class="result-row"><span>Nilai Stok (${totalStock}kg × Rp120rb estimasi)</span><span>${fmt(stockValue)}</span></div>
+        <div class="result-row" style="color:#06b6d4;"><span>Total Aset</span><span>${fmt(totalAsset + stockValue)}</span></div>
+        <div class="result-row" style="color:#ef4444;"><span>Total Hutang</span><span>−${fmt(totalDebt)}</span></div>
+        <div class="result-row total"><span>Nilai Bersih</span><span style="color:${netAssets >= 0 ? '#22c55e' : '#ef4444'}">${fmt(netAssets)}</span></div>
+      </div>
+      <p style="color:#4b5563;font-size:12px;margin-top:12px;">* Nilai likuidasi — jika bisnis dijual seluruhnya hari ini. Stok diestimasi dengan HPP rata-rata.</p>
+    `;
+  } else if (method === 'revenue') {
+    const monthlyRev = totalIncome; // July so far
+    const multiples = [2, 3, 5];
+    html = `<div class="result-box">
+      <div class="result-row"><span>Pendapatan Bulanan (estimasi)</span><span style="color:#22c55e;">${fmt(monthlyRev)}</span></div>
+      <p style="color:#6b7280;font-size:13px;margin:12px 0;">Bisnis baru berjalan 3 minggu — angka di bawah sangat kasar.</p>
+      <table style="width:100%;font-size:13px;">
+        <tr><th style="color:#6b7280;">Multiple</th><th style="color:#6b7280;" class="text-right">Estimasi Valuasi</th><th style="color:#6b7280;">Keterangan</th></tr>
+        ${multiples.map(m => {
+          const val = monthlyRev * m;
+          const note = m <= 3 ? 'Konservatif (bisnis baru)' : 'Optimis (prospek bagus)';
+          return `<tr><td>${m}x Revenue</td><td class="text-right text-blue">${fmt(val)}</td><td style="color:#6b7280;">${note}</td></tr>`;
+        }).join('')}
+      </table>
+    </div>`;
+  } else {
+    // Simulasi Investor
+    const monthlyRev = totalIncome;
+    html = `
+      <label>Valuasi Bisnis (Rp)</label>
+      <input type="number" id="valAmount" value="${monthlyRev * 3}" oninput="calcInvestor()" />
+      <label>Investor Masuk (Rp)</label>
+      <input type="number" id="investAmount" value="25000000" oninput="calcInvestor()" />
+      <div id="investorResult" class="result-box"></div>
+    `;
+    calcInvestor();
+    return;
+  }
+  document.getElementById('valuationResult').innerHTML = html;
+}
+
+function calcInvestor() {
+  const val = parseInt(document.getElementById('valAmount').value) || 0;
+  const inv = parseInt(document.getElementById('investAmount').value) || 0;
+  const pct = val > 0 ? (inv / val * 100) : 0;
+  const founderPct = 100 - pct;
+  document.getElementById('investorResult').innerHTML = `
+    <div class="result-row"><span>Valuasi Bisnis</span><span class="text-blue">${fmt(val)}</span></div>
+    <div class="result-row"><span>Investor Masuk</span><span class="text-green">${fmt(inv)}</span></div>
+    <div class="result-row total"><span>Investor Mendapat</span><span style="color:#f59e0b;">${pct.toFixed(1)}%</span></div>
+    <div class="result-row"><span>Pendiri (Founder) Tersisa</span><span style="color:#22c55e;">${founderPct.toFixed(1)}%</span></div>
+  `;
+}
+
+// ═══════════════════════════════════════════
+// TAB SWITCHING
+// ═══════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.tab-btn[onclick*="${name}"]`).classList.add('active');
+  document.getElementById(`tab-${name}`).classList.add('active');
+  if (name === 'transactions') renderTransactions();
+}
+
+// ═══════════════════════════════════════════
+// TRANSACTION LIST
+// ═══════════════════════════════════════════
+function renderTransactions() {
+  const search = document.getElementById('txSearch').value.toLowerCase();
+  const typeFilter = document.getElementById('txTypeFilter').value;
+  const statusFilter = document.getElementById('txStatusFilter').value;
+  const month = document.getElementById('monthFilter').value;
+
+  let tx = DATA.transactions;
+  if (month !== 'all') tx = tx.filter(t => t.date.startsWith(month));
+  if (typeFilter !== 'all') tx = tx.filter(t => t.type === typeFilter);
+  if (statusFilter !== 'all') tx = tx.filter(t => t.payment_status === statusFilter);
+  if (search) tx = tx.filter(t =>
+    t.description.toLowerCase().includes(search) ||
+    t.id.toLowerCase().includes(search) ||
+    t.notes.toLowerCase().includes(search)
+  );
+
+  tx.sort((a,b) => a.date.localeCompare(b.date));
+
+  const total = tx.reduce((s,t) => s + t.amount, 0);
+  const typeLabels = { income:'Pendapatan', cogs:'Pembelian', expense:'Biaya', asset:'Aset' };
+  const statusLabels = { lunas:'✅ Lunas', tempo:'⏳ Tempo', hutang:'⚠️ Hutang', dp:'💳 DP' };
+  const statusClasses = { lunas:'status-lunas', tempo:'status-tempo', hutang:'status-hutang', dp:'status-dp' };
+  const sourceFiles = [...new Set(DATA.transactions.map(t => t.source_file))];
+
+  const tbody = document.querySelector('#txTable tbody');
+  tbody.innerHTML = tx.map(t => {
+    const acct = DATA.chart_of_accounts[t.account_code];
+    const acctName = acct ? acct.name : t.account_code;
+    // Get the short filename
+    const srcShort = t.source_file ? t.source_file.replace(/^\d{4}-\d{2}-\d{2} - /, '').replace(/ - ✅PROCESSED\.pdf$/, '') : '-';
+    return `<tr>
+      <td style="color:#6b7280;">${t.id}</td>
+      <td>${t.date}</td>
+      <td>${t.description}</td>
+      <td style="color:#8892a4;">${acctName}</td>
+      <td class="text-right" style="color:${t.type === 'income' ? '#22c55e' : t.type === 'expense' ? '#ef4444' : t.type === 'cogs' ? '#3b82f6' : '#06b6d4'}">${fmt(t.amount)}</td>
+      <td><span class="tx-type ${t.type}">${typeLabels[t.type] || t.type}</span></td>
+      <td><span class="status-badge ${statusClasses[t.payment_status] || ''}">${statusLabels[t.payment_status] || t.payment_status}</span></td>
+      <td class="tx-source" title="${t.source_file || ''}">${srcShort}</td>
+      <td class="tx-notes">${t.notes || '-'}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('txCount').textContent = `Menampilkan ${tx.length} transaksi · Total: ${fmt(total)}`;
+}
+
+// Init
+document.getElementById('lastUpdate').textContent = DATA.last_updated;
+renderDashboard(DATA.transactions);
+</script>
+</body>
+</html>
