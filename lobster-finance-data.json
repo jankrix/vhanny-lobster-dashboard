@@ -476,6 +476,39 @@
       "payment_status": "lunas",
       "notes": "Pelunasan setelah DP Rp3.250.000. Total Rp20.150.000 utk 155kg.",
       "source_file": "WhatsApp - VhanY 23 Jul 2026"
+    },
+    {
+      "id": "TRX-034",
+      "date": "2026-07-17",
+      "account_code": "4.01",
+      "description": "Penjualan ke Hakka Restoran — 3kg @ Rp450.000 (INV00006)",
+      "amount": 1350000,
+      "type": "income",
+      "payment_status": "tempo",
+      "notes": "Tempo 24 Jul. Sisa tagihan Rp1.350.000",
+      "source_file": "INV00006.pdf"
+    },
+    {
+      "id": "TRX-035",
+      "date": "2026-07-22",
+      "account_code": "4.01",
+      "description": "Penjualan ke Hakka Restoran — 14kg @ Rp180.000 (INV00009)",
+      "amount": 2520000,
+      "type": "income",
+      "payment_status": "tempo",
+      "notes": "Tempo 29 Jul. Sisa tagihan Rp2.520.000",
+      "source_file": "INV00009.pdf"
+    },
+    {
+      "id": "TRX-036",
+      "date": "2026-07-23",
+      "account_code": "4.01",
+      "description": "Penjualan ke Hakka Restoran — 15kg @ Rp165.000 (INV00010)",
+      "amount": 2475000,
+      "type": "income",
+      "payment_status": "tempo",
+      "notes": "Tempo 30 Jul. Sisa tagihan Rp2.475.000",
+      "source_file": "INV00010.pdf"
     }
   ],
   "inventory_notes": {
