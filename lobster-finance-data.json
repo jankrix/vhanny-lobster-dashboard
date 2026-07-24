@@ -486,7 +486,7 @@
       "type": "income",
       "payment_status": "tempo",
       "notes": "Tempo 24 Jul. Sisa tagihan Rp1.350.000",
-      "source_file": "INV00006.pdf"
+      "source_file": "2026-07-17 - Hakka Restoran 3kg (INV00006) - Semarang - BARU.pdf"
     },
     {
       "id": "TRX-035",
@@ -497,7 +497,7 @@
       "type": "income",
       "payment_status": "tempo",
       "notes": "Tempo 29 Jul. Sisa tagihan Rp2.520.000",
-      "source_file": "INV00009.pdf"
+      "source_file": "2026-07-22 - Hakka Restoran 14kg (INV00009) - Semarang - BARU.pdf"
     },
     {
       "id": "TRX-036",
@@ -508,7 +508,7 @@
       "type": "income",
       "payment_status": "tempo",
       "notes": "Tempo 30 Jul. Sisa tagihan Rp2.475.000",
-      "source_file": "INV00010.pdf"
+      "source_file": "2026-07-23 - Hakka Restoran 15kg (INV00010) - Semarang - BARU.pdf"
     }
   ],
   "inventory_notes": {

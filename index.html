@@ -439,9 +439,9 @@ const DATA = {
     {id:"TRX-031",date:"2026-07-21",account_code:"1.04",description:"Sewa perusahaan — Rp 75jt untuk 7 bulan (Jul 2026 - Jan 2027)",amount:75000000,type:"asset",payment_status:"lunas",notes:"Jatuh tempo Jan 2027. Biaya per bulan: Rp 10.714.286",source_file:"WhatsApp - VhanY 24 Jul 2026"},
     {id:"TRX-032",date:"2026-07-31",account_code:"6.10",description:"Beban Sewa Juli 2026 (1/7)",amount:10714285,type:"expense",payment_status:"lunas",notes:"Penyusutan sewa dibayar dimuka — Rp 75jt ÷ 7",source_file:"Amortisasi otomatis"},
     {id:"TRX-033",date:"2026-07-23",account_code:"5.02",description:"Pelunasan Boyolali 2 — 155kg (sisa Rp16.900.000)",amount:16900000,type:"cogs",payment_status:"lunas",notes:"Pelunasan setelah DP Rp3.250.000. Total Rp20.150.000 utk 155kg.",source_file:"WhatsApp - VhanY 23 Jul 2026"},
-    {id:"TRX-034",date:"2026-07-17",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 3kg @ Rp450.000 (INV00006)",amount:1350000,type:"income",payment_status:"tempo",notes:"Tempo 24 Jul. Sisa tagihan Rp1.350.000",source_file:"INV00006.pdf"},
-    {id:"TRX-035",date:"2026-07-22",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 14kg @ Rp180.000 (INV00009)",amount:2520000,type:"income",payment_status:"tempo",notes:"Tempo 29 Jul. Sisa tagihan Rp2.520.000",source_file:"INV00009.pdf"},
-    {id:"TRX-036",date:"2026-07-23",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 15kg @ Rp165.000 (INV00010)",amount:2475000,type:"income",payment_status:"tempo",notes:"Tempo 30 Jul. Sisa tagihan Rp2.475.000",source_file:"INV00010.pdf"}
+    {id:"TRX-034",date:"2026-07-17",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 3kg @ Rp450.000 (INV00006)",amount:1350000,type:"income",payment_status:"tempo",notes:"Tempo 24 Jul. Sisa tagihan Rp1.350.000",source_file:"2026-07-17 - Hakka Restoran 3kg (INV00006) - Semarang - BARU.pdf"},
+    {id:"TRX-035",date:"2026-07-22",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 14kg @ Rp180.000 (INV00009)",amount:2520000,type:"income",payment_status:"tempo",notes:"Tempo 29 Jul. Sisa tagihan Rp2.520.000",source_file:"2026-07-22 - Hakka Restoran 14kg (INV00009) - Semarang - BARU.pdf"},
+    {id:"TRX-036",date:"2026-07-23",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 15kg @ Rp165.000 (INV00010)",amount:2475000,type:"income",payment_status:"tempo",notes:"Tempo 30 Jul. Sisa tagihan Rp2.475.000",source_file:"2026-07-23 - Hakka Restoran 15kg (INV00010) - Semarang - BARU.pdf"}
   ],
   inventory_notes: {
     stok_tercatat: [
@@ -798,14 +798,9 @@ function renderTransactions() {
     let displayName = '-';
     let fullName = t.source_file || '';
     if (t.source_file && t.source_file.match(/\.pdf$/)) {
-      // Extract short name: invoice number or description
+      // Extract invoice number for display, or just show icon
       const invMatch = t.source_file.match(/INV\d{5}/);
-      if (invMatch) {
-        displayName = invMatch[0];
-      } else {
-        // Simple name: just the first meaningful part
-        displayName = t.source_file.replace(/^\d{4}-\d{2}-\d{2} - /, '').replace(/ - .*$/, '');
-      }
+      displayName = invMatch ? invMatch[0] : '📄';
       const rawUrl = 'https://raw.githubusercontent.com/jankrix/vhanny-lobster-dashboard/main/' + encodeURIComponent(t.source_file);
       srcCell = `<a href="javascript:void(0)" onclick="openFileModal('${rawUrl.replace(/'/g, "\\'")}','${fullName.replace(/'/g, "\\'")}')" style="color:#3b82f6;text-decoration:underline;">${displayName} ↗</a>`;
     } else if (t.source_file) {
