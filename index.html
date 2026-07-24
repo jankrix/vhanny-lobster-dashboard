@@ -803,7 +803,8 @@ function renderTransactions() {
       if (invMatch) {
         displayName = invMatch[0];
       } else {
-        displayName = t.source_file.replace(/^\d{4}-\d{2}-\d{2} - /, '').replace(/ - [✅]+PROCESSED\.pdf$/, '').replace(/ - BARU\.pdf$/, '');
+        // Simple name: just the first meaningful part
+        displayName = t.source_file.replace(/^\d{4}-\d{2}-\d{2} - /, '').replace(/ - .*✅PROCESSED\.pdf$/, '').replace(/ - BARU\.pdf$/, '').replace(/ - .*$/, '');
       }
       const rawUrl = 'https://raw.githubusercontent.com/jankrix/vhanny-lobster-dashboard/main/' + encodeURIComponent(t.source_file);
       srcCell = `<a href="javascript:void(0)" onclick="openFileModal('${rawUrl.replace(/'/g, "\\'")}','${fullName.replace(/'/g, "\\'")}')" style="color:#3b82f6;text-decoration:underline;">${displayName} ↗</a>`;
