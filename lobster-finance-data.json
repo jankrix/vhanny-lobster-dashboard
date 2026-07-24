@@ -101,6 +101,16 @@
       "name": "Peralatan",
       "type": "asset",
       "description": "Alat-alat tahan lama (sealer, dll)"
+    },
+    "1.04": {
+      "name": "Sewa Dibayar Dimuka",
+      "type": "asset",
+      "description": "Sewa perusahaan dibayar di muka"
+    },
+    "6.10": {
+      "name": "Biaya Sewa",
+      "type": "expense",
+      "description": "Biaya sewa perusahaan (bulanan)"
     }
   },
   "transactions": [
@@ -433,6 +443,17 @@
       "payment_status": "hutang",
       "notes": "Data tidak lengkap. Perkiraan: DP Rp 3.250.000, hutang Rp 14.750.000. 17kg nitip di Salatiga.",
       "source_file": "2026-07-24 - Pembukuan Awal Lobster Semarang - Semarang - \u2705PROCESSED.pdf"
+    },
+    {
+      "id": "TRX-031",
+      "date": "2026-07-21",
+      "account_code": "1.04",
+      "description": "Sewa perusahaan \u2014 Rp 75jt untuk 7 bulan (Jul 2026 - Jan 2027)",
+      "amount": 75000000,
+      "type": "asset",
+      "payment_status": "lunas",
+      "notes": "Jatuh tempo Jan 2027. Biaya per bulan: Rp 10.714.286",
+      "source_file": "WhatsApp - VhanY 24 Jul 2026"
     }
   ],
   "inventory_notes": {

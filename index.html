@@ -377,9 +377,11 @@ const DATA = {
     "6.06": { name: "Biaya Lain-lain", type: "expense" },
     "6.07": { name: "Denda & Tilang", type: "expense" },
     "6.09": { name: "Biaya Packing", type: "expense" },
+    "6.10": { name: "Biaya Sewa", type: "expense" },
     "1.01": { name: "Kolam (Aset)", type: "asset" },
     "1.02": { name: "Freezer (Aset)", type: "asset" },
     "1.03": { name: "Peralatan", type: "asset" },
+    "1.04": { name: "Sewa Dibayar Dimuka", type: "asset" },
     "2.01": { name: "Hutang Supplier", type: "liability" }
   },
   transactions: [
@@ -412,7 +414,8 @@ const DATA = {
     {id:"TRX-027",date:"2026-07-17",account_code:"4.02",description:"Penjualan eceran — 2kg @ Rp450rb",amount:900000,type:"income",payment_status:"tempo",notes:"Belum dibayar"},
     {id:"TRX-028",date:"2026-07-04",account_code:"5.04",description:"Pembelian Bekasi — 20kg @ Rp135rb",amount:2700000,type:"cogs",payment_status:"tempo",notes:"Jual 10kg @ Rp165rb (tempo)"},
     {id:"TRX-029",date:"2026-07-17",account_code:"4.02",description:"Penjualan eceran — 10kg @ Rp165rb",amount:1650000,type:"income",payment_status:"tempo",notes:"Belum dibayar"},
-    {id:"TRX-030",date:"2026-07-17",account_code:"5.02",description:"Pembelian Boyolali 2 — 140kg @ Rp135rb",amount:18200000,type:"cogs",payment_status:"hutang",notes:"Perkiraan DP Rp3.25jt, hutang Rp14.75jt"}
+    {id:"TRX-030",date:"2026-07-17",account_code:"5.02",description:"Pembelian Boyolali 2 — 140kg @ Rp135rb",amount:18200000,type:"cogs",payment_status:"hutang",notes:"Perkiraan DP Rp3.25jt, hutang Rp14.75jt"},
+    {id:"TRX-031",date:"2026-07-21",account_code:"1.04",description:"Sewa perusahaan — Rp75jt (Jul 2026 - Jan 2027)",amount:75000000,type:"asset",payment_status:"lunas",notes:"Rp 10.714.286/bln. Jatuh tempo Jan 2027"}
   ],
   inventory_notes: {
     stok_tercatat: [
