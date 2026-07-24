@@ -679,11 +679,25 @@ function calcValuation() {
     // Simulasi Investor
     const monthlyRev = Math.round(totalIncome / 3 * 4.33);
     html = `
-      <label>Pre-money Valuation (Rp)</label>
+      <div style="margin-bottom:12px;">
+        <label>Mode Hitung</label>
+        <select id="investMode" onchange="calcInvestor()">
+          <option value="duit">💰 Saya target duit → hitung %</option>
+          <option value="persen">🎯 Saya target % → hitung duit</option>
+        </select>
+      </div>
+      <label>Valuasi Bisnis Saat Ini (Pre-money)</label>
       <input type="number" id="valAmount" value="${monthlyRev * 3}" oninput="calcInvestor()" />
-      <label>Investor Masuk (Rp)</label>
-      <input type="number" id="investAmount" value="25000000" oninput="calcInvestor()" />
+      <div id="investDuitInput">
+        <label>Investor Masuk (Rp)</label>
+        <input type="number" id="investAmount" value="25000000" oninput="calcInvestor()" />
+      </div>
+      <div id="investPersenInput" style="display:none;">
+        <label>Investor Target (%)</label>
+        <input type="number" id="investPercent" value="20" min="1" max="99" oninput="calcInvestor()" />
+      </div>
       <div id="investorResult" class="result-box"></div>
+      <p style="color:#4b5563;font-size:11px;margin-top:8px;">* Valuasi bisa diubah sesuai negosiasi dengan investor.</p>
     `;
     calcInvestor();
     return;
@@ -692,18 +706,38 @@ function calcValuation() {
 }
 
 function calcInvestor() {
+  const mode = document.getElementById('investMode').value;
   const val = parseInt(document.getElementById('valAmount').value) || 0;
-  const inv = parseInt(document.getElementById('investAmount').value) || 0;
-  const postVal = val + inv;
-  const pct = postVal > 0 ? (inv / postVal * 100) : 0;
-  const founderPct = 100 - pct;
-  document.getElementById('investorResult').innerHTML = `
-    <div class="result-row"><span>Pre-money Valuation</span><span class="text-blue">${fmt(val)}</span></div>
-    <div class="result-row"><span>Investor Masuk</span><span class="text-green">${fmt(inv)}</span></div>
-    <div class="result-row"><span>Post-money Valuation</span><span style="color:#06b6d4;">${fmt(postVal)}</span></div>
-    <div class="result-row total"><span>Investor Mendapat</span><span style="color:#f59e0b;">${pct.toFixed(1)}%</span></div>
-    <div class="result-row"><span>Founder Tersisa</span><span style="color:#22c55e;">${founderPct.toFixed(1)}%</span></div>
-  `;
+
+  if (mode === 'persen') {
+    // Mode: target % → hitung duit
+    const targetPct = parseFloat(document.getElementById('investPercent').value) || 0;
+    document.getElementById('investDuitInput').style.display = 'none';
+    document.getElementById('investPersenInput').style.display = 'block';
+    const inv = targetPct > 0 ? Math.round(val / (100 / targetPct - 1)) : 0;
+    const postVal = val + inv;
+    document.getElementById('investorResult').innerHTML = `
+      <div class="result-row"><span>Valuasi Saat Ini</span><span class="text-blue">${fmt(val)}</span></div>
+      <div class="result-row"><span>Target Investor</span><span style="color:#f59e0b;">${targetPct.toFixed(1)}%</span></div>
+      <div class="result-row"><span>Dana Dibutuhkan</span><span class="text-green">${fmt(inv)}</span></div>
+      <div class="result-row"><span>Nilai Perusahaan (Post-money)</span><span style="color:#06b6d4;">${fmt(postVal)}</span></div>
+      <div class="result-row total"><span>Founder Tersisa</span><span style="color:#22c55e;">${(100 - targetPct).toFixed(1)}%</span></div>
+    `;
+  } else {
+    // Mode: target duit → hitung %
+    const inv = parseInt(document.getElementById('investAmount').value) || 0;
+    document.getElementById('investDuitInput').style.display = 'block';
+    document.getElementById('investPersenInput').style.display = 'none';
+    const postVal = val + inv;
+    const pct = postVal > 0 ? (inv / postVal * 100) : 0;
+    document.getElementById('investorResult').innerHTML = `
+      <div class="result-row"><span>Valuasi Saat Ini</span><span class="text-blue">${fmt(val)}</span></div>
+      <div class="result-row"><span>Investor Masuk</span><span class="text-green">${fmt(inv)}</span></div>
+      <div class="result-row"><span>Nilai Perusahaan (Post-money)</span><span style="color:#06b6d4;">${fmt(postVal)}</span></div>
+      <div class="result-row total"><span>Investor Mendapat</span><span style="color:#f59e0b;">${pct.toFixed(1)}%</span></div>
+      <div class="result-row"><span>Founder Tersisa</span><span style="color:#22c55e;">${(100 - pct).toFixed(1)}%</span></div>
+    `;
+  }
 }
 
 // ═══════════════════════════════════════════
