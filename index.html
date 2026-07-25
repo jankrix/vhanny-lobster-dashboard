@@ -208,6 +208,12 @@ tr:last-child td { border-bottom: none; }
   transition: opacity 0.2s;
 }
 .btn-valuation:hover { opacity: 0.9; }
+.btn-trend {
+  background: #1a1f2e; border: 1px solid #2a3040; color: #f97316;
+  padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s; white-space: nowrap;
+}
+.btn-trend:hover { background: #2a3040; border-color: #f97316; }
 
 /* FOOTER */
 .footer {
@@ -339,6 +345,54 @@ tr:last-child td { border-bottom: none; }
 .analysis-stat .label { font-size: 11px; color: #6b7280; margin-bottom: 4px; }
 .analysis-stat .value { font-size: 18px; font-weight: 700; }
 .analysis-divider { border: none; border-top: 1px solid #1f2937; margin: 16px 0; }
+
+/* TREND VIEW — full screen mode */
+.trend-view {
+  display: none;
+}
+.trend-view.active {
+  display: block;
+  animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.trend-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 24px;
+}
+.trend-header h2 {
+  font-size: 20px; font-weight: 700;
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.trend-header .badge { font-size: 12px; color: #6b7280; }
+.trend-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 16px; margin-bottom: 24px;
+}
+@media (max-width: 900px) { .trend-grid { grid-template-columns: 1fr; } }
+.trend-card {
+  background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+  padding: 20px;
+}
+.trend-card h3 { font-size: 14px; color: #8892a4; margin-bottom: 12px; }
+.trend-card canvas { max-height: 260px; }
+.trend-card.full { grid-column: 1 / -1; }
+.trend-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px; margin-bottom: 24px;
+}
+.trend-stat {
+  background: #111827; border: 1px solid #1f2937; border-radius: 10px;
+  padding: 14px; text-align: center;
+}
+.trend-stat .label { font-size: 11px; color: #6b7280; margin-bottom: 4px; }
+.trend-stat .value { font-size: 20px; font-weight: 700; }
+.trend-stat .sub { font-size: 11px; color: #6b7280; margin-top: 2px; }
+.trend-empty {
+  text-align: center; padding: 60px 20px; color: #6b7280;
+}
+.trend-empty p { font-size: 14px; margin-bottom: 8px; }
+.trend-empty .hint { font-size: 12px; color: #4b5563; }
 </style>
 </head>
 <body>
@@ -358,12 +412,13 @@ tr:last-child td { border-bottom: none; }
 
   <!-- HEADER -->
   <div class="header">
-    <h1>🦞 Lobster Financial Control</h1>
+    <h1 onclick="exitTrend()" style="cursor:pointer;" id="dashboardTitle">🦞 Lobster Financial Control</h1>
     <div class="header-controls">
       <select id="monthFilter" onchange="filterData()">
         <option value="all">Semua Bulan</option>
         <option value="2026-07" selected>Juli 2026</option>
       </select>
+      <button class="btn-trend" onclick="openTrend()">📈 Trend</button>
       <span class="badge" id="lastUpdate">24 Jul 2026</span>
     </div>
   </div>
@@ -445,6 +500,49 @@ tr:last-child td { border-bottom: none; }
 
   <!-- FOOTER -->
   <div class="footer">Data dikelola oleh Hermes Agent — diperbarui otomatis setiap ada input baru</div>
+
+  <!-- TREND VIEW — full screen (hidden by default) -->
+  <div class="trend-view" id="trendView">
+    <div class="trend-header">
+      <h2>📈 Trend Bisnis Multi-Bulan</h2>
+      <span class="badge">Klik logo 🦞 di atas untuk kembali</span>
+    </div>
+
+    <div class="trend-stats" id="trendStats"></div>
+
+    <div class="trend-grid">
+      <div class="trend-card">
+        <h3>💰 Pendapatan & Laba Kotor</h3>
+        <canvas id="trendRevenueChart"></canvas>
+      </div>
+      <div class="trend-card">
+        <h3>📉 Biaya Operasional per Bulan</h3>
+        <canvas id="trendExpenseChart"></canvas>
+      </div>
+      <div class="trend-card full">
+        <h3>📊 Pendapatan per Sumber (Stacked)</h3>
+        <canvas id="trendSourceChart"></canvas>
+      </div>
+      <div class="trend-card">
+        <h3>📦 Volume Penjualan (kg)</h3>
+        <canvas id="trendVolumeChart"></canvas>
+      </div>
+      <div class="trend-card">
+        <h3>⏳ AR Aging — Piutang</h3>
+        <canvas id="trendAgingChart"></canvas>
+      </div>
+    </div>
+
+    <!-- AR Aging Table -->
+    <div class="trend-card full">
+      <h3>⏳ Rincian AR Aging</h3>
+      <table style="font-size:12px;" id="trendAgingTable">
+        <thead><tr><th>Invoice</th><th>Jatuh Tempo</th><th class="text-right">Nominal</th><th>Aging</th><th>Status</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 
 <!-- FILE MODAL -->
@@ -1464,6 +1562,410 @@ function renderContextLog(month) {
     ctxHtml += '<div style="font-size:12px;color:#4b5563;padding:3px 0;">\u2705 ' + d.text + ' <span style="color:#6b7280;">\u2014 ' + dateStr + '</span></div>';
   }
   document.getElementById('contextLogContent').innerHTML = ctxHtml;
+}
+
+// ═══════════════════════════════════════════
+// TREND VIEW — full screen multi-month analysis
+// ═══════════════════════════════════════════
+
+function openTrend() {
+  document.getElementById('monthFilter').style.display = 'none';
+  document.querySelector('.tabs').style.display = 'none';
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.style.display = 'none'; });
+  document.getElementById('trendView').classList.add('active');
+  renderTrend();
+}
+
+function exitTrend() {
+  document.getElementById('monthFilter').style.display = '';
+  document.querySelector('.tabs').style.display = '';
+  var activeTab = document.querySelector('.tab-btn.active');
+  var tabName = 'dashboard';
+  if (activeTab) {
+    var match = activeTab.getAttribute('onclick');
+    if (match) tabName = match.replace("switchTab('", "").replace("')", "");
+  }
+  document.getElementById('tab-' + tabName).style.display = 'block';
+  document.getElementById('trendView').classList.remove('active');
+}
+
+function getMonths() {
+  var months = [];
+  DATA.transactions.forEach(function(t) {
+    var m = t.date.substring(0, 7);
+    if (months.indexOf(m) === -1) months.push(m);
+  });
+  months.sort();
+  return months;
+}
+
+function aggregateByMonth(months) {
+  var result = {};
+  months.forEach(function(m) {
+    var tx = DATA.transactions.filter(function(t) { return t.date.startsWith(m); });
+    var income = tx.filter(function(t) { return t.type === 'income'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+    var cogs = tx.filter(function(t) { return t.type === 'cogs'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+    var expense = tx.filter(function(t) { return t.type === 'expense'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+    var asset = tx.filter(function(t) { return t.type === 'asset'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+
+    // Income by source
+    var bySrc = {};
+    tx.filter(function(t) { return t.type === 'income'; }).forEach(function(t) {
+      var src = (DATA.chart_of_accounts[t.account_code] && DATA.chart_of_accounts[t.account_code].name) || t.account_code;
+      bySrc[src] = (bySrc[src] || 0) + t.amount;
+    });
+
+    // Expense by category
+    var byExpCat = {};
+    tx.filter(function(t) { return t.type === 'expense'; }).forEach(function(t) {
+      var cat = (DATA.chart_of_accounts[t.account_code] && DATA.chart_of_accounts[t.account_code].name) || t.account_code;
+      byExpCat[cat] = (byExpCat[cat] || 0) + t.amount;
+    });
+
+    // Outstanding income
+    var outstanding = tx.filter(function(t) { return t.type === 'income' && t.payment_status !== 'lunas'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+
+    // Estimate sold kg from income (avg Rp 180/kg for July)
+    var incomeTx = tx.filter(function(t) { return t.type === 'income'; });
+    var estKg = 0;
+    incomeTx.forEach(function(t) {
+      var kgMatch = t.description.match(/(\d+)kg/);
+      if (kgMatch) estKg += parseInt(kgMatch[1]);
+    });
+
+    // Gross profit estimate
+    var soldKg = 244;
+    var avgHPP = 115000;
+    var estCOGS = soldKg * avgHPP;
+    var grossProfit = income - estCOGS;
+
+    result[m] = {
+      income: income, cogs: cogs, expense: expense, asset: asset,
+      bySrc: bySrc, byExpCat: byExpCat, outstanding: outstanding,
+      estKg: estKg, grossProfit: grossProfit, txCount: tx.length
+    };
+  });
+  return result;
+}
+
+function renderTrend() {
+  var months = getMonths();
+  var agg = aggregateByMonth(months);
+
+  var labels = months.map(function(m) {
+    return new Date(m + '-01').toLocaleDateString('id', { month: 'short', year: 'numeric' });
+  });
+
+  // Stats row
+  var totalIncome = 0, totalExpense = 0, totalOutstanding = 0;
+  months.forEach(function(m) { totalIncome += agg[m].income; totalExpense += agg[m].expense; totalOutstanding += agg[m].outstanding; });
+  var avgIncome = months.length > 0 ? Math.round(totalIncome / months.length) : 0;
+  var totalSoldKg = 0;
+  months.forEach(function(m) { totalSoldKg += agg[m].estKg; });
+
+  document.getElementById('trendStats').innerHTML =
+    '<div class="trend-stat"><div class="label">Total Pendapatan</div><div class="value" style="color:#22c55e;">' + fmt(totalIncome) + '</div><div class="sub">' + months.length + ' bulan</div></div>' +
+    '<div class="trend-stat"><div class="label">Rata-rata/Bulan</div><div class="value" style="color:#3b82f6;">' + fmt(avgIncome) + '</div><div class="sub">Pendapatan</div></div>' +
+    '<div class="trend-stat"><div class="label">Total Biaya</div><div class="value" style="color:#ef4444;">' + fmt(totalExpense) + '</div><div class="sub">Operasional</div></div>' +
+    '<div class="trend-stat"><div class="label">Piutang Beredar</div><div class="value" style="color:#f59e0b;">' + fmt(totalOutstanding) + '</div><div class="sub">Belum tertagih</div></div>' +
+    '<div class="trend-stat"><div class="label">Estimasi Terjual</div><div class="value" style="color:#06b6d4;">' + totalSoldKg + ' kg</div><div class="sub">Total volume</div></div>';
+
+  // If only 1 month, show placeholder
+  if (months.length <= 1) {
+    renderSingleMonthFallback(agg, months, labels);
+  } else {
+    renderMultiMonthCharts(agg, months, labels);
+  }
+
+  // AR Aging — always render
+  renderAging();
+}
+
+function renderSingleMonthFallback(agg, months, labels) {
+  var m = months[0];
+  var d = agg[m];
+
+  // Revenue chart — single bar
+  var rCtx = document.getElementById('trendRevenueChart').getContext('2d');
+  if (window.trRevChart) window.trRevChart.destroy();
+  window.trRevChart = new Chart(rCtx, {
+    type: 'bar', data: {
+      labels: labels,
+      datasets: [
+        { label: 'Pendapatan', data: [d.income], backgroundColor: '#22c55e', borderRadius: 6 },
+        { label: 'Laba Kotor', data: [d.grossProfit], backgroundColor: '#3b82f6', borderRadius: 6 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#8892a4', font: { size: 11 } } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: function(v) { return 'Rp' + (v/1000000).toFixed(1) + 'jt'; }, color: '#6b7280' } },
+        x: { ticks: { color: '#8892a4' } }
+      }
+    }
+  });
+
+  // Expense chart — single bar
+  var eCtx = document.getElementById('trendExpenseChart').getContext('2d');
+  if (window.trExpChart) window.trExpChart.destroy();
+  window.trExpChart = new Chart(eCtx, {
+    type: 'bar', data: {
+      labels: labels,
+      datasets: [{ label: 'Biaya Operasional', data: [d.expense], backgroundColor: '#8b5cf6', borderRadius: 6 }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#8892a4', font: { size: 11 } } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: function(v) { return 'Rp' + (v/1000).toFixed(0) + 'rb'; }, color: '#6b7280' } },
+        x: { ticks: { color: '#8892a4' } }
+      }
+    }
+  });
+
+  // Source chart
+  var srcLabels = Object.keys(d.bySrc);
+  var srcValues = srcLabels.map(function(k) { return d.bySrc[k]; });
+  var sCtx = document.getElementById('trendSourceChart').getContext('2d');
+  if (window.trSrcChart) window.trSrcChart.destroy();
+  window.trSrcChart = new Chart(sCtx, {
+    type: 'bar', data: {
+      labels: labels,
+      datasets: [{
+        label: 'Pendapatan per Sumber', data: srcValues,
+        backgroundColor: srcLabels.map(function(_,i) { return ['#22c55e','#3b82f6','#f59e0b','#8b5cf6','#ec4899'][i % 5]; }),
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#8892a4', font: { size: 11 } } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: function(v) { return 'Rp' + (v/1000000).toFixed(1) + 'jt'; }, color: '#6b7280' } },
+        x: { ticks: { color: '#8892a4' } }
+      }
+    }
+  });
+
+  // Volume chart
+  var vCtx = document.getElementById('trendVolumeChart').getContext('2d');
+  if (window.trVolChart) window.trVolChart.destroy();
+  window.trVolChart = new Chart(vCtx, {
+    type: 'bar', data: {
+      labels: labels,
+      datasets: [{ label: 'Terjual (kg)', data: [d.estKg], backgroundColor: '#f97316', borderRadius: 6 }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#8892a4', font: { size: 11 } } } },
+      scales: { y: { beginAtZero: true, ticks: { color: '#6b7280' } }, x: { ticks: { color: '#8892a4' } } }
+    }
+  });
+
+  // Aging chart — render later
+  var aCtx = document.getElementById('trendAgingChart').getContext('2d');
+  if (window.trAgeChart) window.trAgeChart.destroy();
+  window.trAgeChart = new Chart(aCtx, {
+    type: 'bar', data: {
+      labels: ['Current (0-7hr)', '8-14hr', '15-30hr', '30+hr'],
+      datasets: [{ label: 'Piutang', data: [0, 0, 0, 0], backgroundColor: ['#22c55e','#f59e0b','#f97316','#ef4444'], borderRadius: 6 }]
+    },
+    options: {
+      responsive: true, plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: function(v) { return 'Rp' + (v/1000).toFixed(0) + 'rb'; }, color: '#6b7280' } },
+        x: { ticks: { color: '#8892a4' } }
+      }
+    }
+  });
+}
+
+function renderMultiMonthCharts(agg, months, labels) {
+  // Build datasets
+  var incomeData = [], gpData = [], expenseData = [], kgData = [];
+  months.forEach(function(m) {
+    incomeData.push(agg[m].income);
+    gpData.push(agg[m].grossProfit);
+    expenseData.push(agg[m].expense);
+    kgData.push(agg[m].estKg);
+  });
+
+  // Revenue + GP
+  var rCtx = document.getElementById('trendRevenueChart').getContext('2d');
+  if (window.trRevChart) window.trRevChart.destroy();
+  window.trRevChart = new Chart(rCtx, {
+    type: 'line', data: {
+      labels: labels,
+      datasets: [
+        { label: 'Pendapatan', data: incomeData, borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.1)', fill: true, tension: 0.3, pointRadius: 4 },
+        { label: 'Laba Kotor', data: gpData, borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3, pointRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#8892a4', font: { size: 11 } } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: function(v) { return 'Rp' + (v/1000000).toFixed(1) + 'jt'; }, color: '#6b7280' } },
+        x: { ticks: { color: '#8892a4' } }
+      }
+    }
+  });
+
+  // Expense
+  var eCtx = document.getElementById('trendExpenseChart').getContext('2d');
+  if (window.trExpChart) window.trExpChart.destroy();
+  window.trExpChart = new Chart(eCtx, {
+    type: 'bar', data: {
+      labels: labels,
+      datasets: [{ label: 'Biaya Operasional', data: expenseData, backgroundColor: '#8b5cf6', borderRadius: 6 }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#8892a4', font: { size: 11 } } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { callback: function(v) { return 'Rp' + (v/1000).toFixed(0) + 'rb'; }, color: '#6b7280' } },
+        x: { ticks: { color: '#8892a4' } }
+      }
+    }
+  });
+
+  // Revenue by source — stacked
+  var allSources = [];
+  months.forEach(function(m) {
+    Object.keys(agg[m].bySrc).forEach(function(s) {
+      if (allSources.indexOf(s) === -1) allSources.push(s);
+    });
+  });
+  var srcColors = ['#22c55e','#3b82f6','#f59e0b','#8b5cf6','#ec4899','#06b6d4'];
+  var srcDatasets = allSources.map(function(s, i) {
+    return {
+      label: s,
+      data: months.map(function(m) { return agg[m].bySrc[s] || 0; }),
+      backgroundColor: srcColors[i % srcColors.length],
+      borderRadius: 4
+    };
+  });
+  var sCtx = document.getElementById('trendSourceChart').getContext('2d');
+  if (window.trSrcChart) window.trSrcChart.destroy();
+  window.trSrcChart = new Chart(sCtx, {
+    type: 'bar', data: { labels: labels, datasets: srcDatasets },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#8892a4', font: { size: 10 } } } },
+      scales: {
+        x: { stacked: true, ticks: { color: '#8892a4' } },
+        y: { stacked: true, beginAtZero: true, ticks: { callback: function(v) { return 'Rp' + (v/1000000).toFixed(1) + 'jt'; }, color: '#6b7280' } }
+      }
+    }
+  });
+
+  // Volume
+  var vCtx = document.getElementById('trendVolumeChart').getContext('2d');
+  if (window.trVolChart) window.trVolChart.destroy();
+  window.trVolChart = new Chart(vCtx, {
+    type: 'bar', data: {
+      labels: labels,
+      datasets: [{ label: 'Terjual (kg)', data: kgData, backgroundColor: '#f97316', borderRadius: 6 }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: '#8892a4', font: { size: 11 } } } },
+      scales: { y: { beginAtZero: true, ticks: { color: '#6b7280' } }, x: { ticks: { color: '#8892a4' } } }
+    }
+  });
+
+  // Aging placeholder
+  var aCtx = document.getElementById('trendAgingChart').getContext('2d');
+  if (window.trAgeChart) window.trAgeChart.destroy();
+  window.trAgeChart = new Chart(aCtx, {
+    type: 'bar', data: {
+      labels: ['Current (0-7hr)', '8-14hr', '15-30hr', '30+hr'],
+      datasets: [{ label: 'Piutang', data: [0, 0, 0, 0], backgroundColor: ['#22c55e','#f59e0b','#f97316','#ef4444'], borderRadius: 6 }]
+    },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: function(v) { return 'Rp' + (v/1000).toFixed(0) + 'rb'; }, color: '#6b7280' } }, x: { ticks: { color: '#8892a4' } } } }
+  });
+}
+
+function renderAging() {
+  // Parse invoices with aging
+  var now = new Date();
+  var agingItems = [];
+  var tempInvoices = DATA.transactions.filter(function(t) { return t.type === 'income' && t.payment_status !== 'lunas'; });
+
+  tempInvoices.forEach(function(t) {
+    var dueDate = null;
+
+    // Try to parse due date from notes (e.g. "Tempo 24 Jul" or "Tempo 29 Jul")
+    if (t.notes) {
+      var tempoMatch = t.notes.match(/tempo\s+(\d{1,2})\s+(Jan|Feb|Mar|Apr|Mei|Jun|Jul|Agu|Sep|Okt|Nov|Des)/i);
+      if (tempoMatch) {
+        var day = parseInt(tempoMatch[1]);
+        var monthMap = {jan:0,feb:1,mar:2,apr:3,mei:4,jun:5,jul:6,agu:7,sep:8,okt:9,nov:10,des:11};
+        var month = monthMap[tempoMatch[2].toLowerCase()] !== undefined ? monthMap[tempoMatch[2].toLowerCase()] : 6;
+        dueDate = new Date(2026, month, day);
+      }
+    }
+
+    // Fallback: transaction date + 7 days
+    if (!dueDate) {
+      var parts = t.date.split('-');
+      dueDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]) + 7);
+    }
+
+    var diffDays = Math.round((now - dueDate) / (1000 * 60 * 60 * 24));
+    var agingBucket = 'Current';
+    if (diffDays > 30) agingBucket = '30+ Hari';
+    else if (diffDays > 14) agingBucket = '15-30 Hari';
+    else if (diffDays > 7) agingBucket = '8-14 Hari';
+    else agingBucket = 'Current (0-7 Hari)';
+
+    var dueStr = dueDate.toLocaleDateString('id', { day: 'numeric', month: 'short', year: 'numeric' });
+    agingItems.push({ desc: t.description, due: dueStr, amount: t.amount, aging: agingBucket, diff: diffDays });
+  });
+
+  // Render aging chart
+  var buckets = { 'Current (0-7 Hari)': 0, '8-14 Hari': 0, '15-30 Hari': 0, '30+ Hari': 0 };
+  agingItems.forEach(function(item) {
+    if (buckets[item.aging] !== undefined) buckets[item.aging] += item.amount;
+    else buckets['30+ Hari'] += item.amount;
+  });
+
+  var aCtx = document.getElementById('trendAgingChart').getContext('2d');
+  if (window.trAgeChart) window.trAgeChart.destroy();
+  var ageLabels = Object.keys(buckets);
+  var ageData = ageLabels.map(function(k) { return buckets[k]; });
+  window.trAgeChart = new Chart(aCtx, {
+    type: 'bar', data: {
+      labels: ageLabels,
+      datasets: [{ label: 'Piutang', data: ageData, backgroundColor: ['#22c55e','#f59e0b','#f97316','#ef4444'], borderRadius: 6 }]
+    },
+    options: {
+      responsive: true, indexAxis: 'y', plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, ticks: { callback: function(v) { return 'Rp' + (v/1000).toFixed(0) + 'rb'; }, color: '#6b7280' } },
+        y: { ticks: { color: '#8892a4', font: { size: 10 } } }
+      }
+    }
+  });
+
+  // Render aging table
+  var tbody = document.getElementById('trendAgingTable').querySelector('tbody');
+  if (agingItems.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#6b7280;padding:20px;">Belum ada piutang tercatat</td></tr>';
+    return;
+  }
+  agingItems.sort(function(a,b) { return b.diff - a.diff; });
+  tbody.innerHTML = agingItems.map(function(item) {
+    var statusColor = item.diff > 14 ? '#ef4444' : item.diff > 7 ? '#f59e0b' : '#22c55e';
+    return '<tr>' +
+      '<td style="color:#8892a4;font-size:11px;">' + item.desc + '</td>' +
+      '<td style="color:#6b7280;font-size:11px;">' + item.due + '</td>' +
+      '<td class="text-right" style="color:#f59e0b;">' + fmt(item.amount) + '</td>' +
+      '<td style="color:' + statusColor + ';">' + (item.diff > 0 ? item.diff + ' hari lewat' : 'Belum jatuh tempo') + '</td>' +
+      '<td><span class="status-badge ' + (item.diff > 14 ? 'status-hutang' : item.diff > 7 ? 'status-tempo' : 'status-lunas') + '">' + item.aging + '</span></td>' +
+    '</tr>';
+  }).join('');
 }
 </script>
 </body>
