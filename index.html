@@ -240,6 +240,105 @@ tr:last-child td { border-bottom: none; }
 }
 .modal .result-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
 .modal .result-row.total { border-top: 1px solid #1f2937; margin-top: 8px; padding-top: 12px; font-weight: 700; font-size: 16px; }
+
+/* ANALYSIS & ACTION PLAN */
+.analysis-section { margin-bottom: 24px; }
+.analysis-card {
+  background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+  padding: 20px; margin-bottom: 16px;
+}
+.analysis-card h3 { font-size: 14px; color: #8892a4; margin-bottom: 12px; }
+.analysis-card p, .analysis-card li { font-size: 13px; color: #e0e6f0; line-height: 1.6; }
+.analysis-card ul { padding-left: 20px; }
+.analysis-card ul li { margin-bottom: 6px; }
+.analysis-card ul li::marker { color: #f97316; }
+.analysis-highlight { color: #f97316; font-weight: 600; }
+.analysis-green { color: #22c55e; }
+.analysis-red { color: #ef4444; }
+.analysis-yellow { color: #f59e0b; }
+.analysis-cyan { color: #06b6d4; }
+.analysis-header-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 12px;
+}
+.analysis-header-row h3 { margin-bottom: 0; }
+.btn-sm {
+  background: #1f2937; border: none; color: #8892a4; padding: 6px 12px;
+  border-radius: 6px; font-size: 11px; cursor: pointer; transition: all 0.2s;
+}
+.btn-sm:hover { color: #e0e6f0; background: #2a3040; }
+.btn-sm.primary {
+  background: linear-gradient(135deg, #f97316, #ef4444); color: white;
+}
+.btn-sm.primary:hover { opacity: 0.9; }
+.analysis-edit {
+  background: #1a1f2e; border: 1px solid #2a3040; color: #e0e6f0;
+  padding: 12px; border-radius: 8px; font-size: 13px; width: 100%;
+  min-height: 150px; font-family: inherit; resize: vertical; line-height: 1.6;
+}
+.analysis-edit:focus { border-color: #f97316; outline: none; }
+.action-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 16px; border-bottom: 1px solid #1a1f2e;
+  transition: background 0.15s;
+}
+.action-item:hover { background: #1a1f2e; }
+.action-item:last-child { border-bottom: none; }
+.action-check {
+  width: 18px; height: 18px; margin-top: 3px; cursor: pointer;
+  accent-color: #22c55e; flex-shrink: 0;
+}
+.action-text { flex: 1; font-size: 13px; line-height: 1.5; }
+.action-text.done { text-decoration: line-through; color: #6b7280; }
+.action-priority {
+  font-size: 10px; padding: 2px 8px; border-radius: 4px;
+  font-weight: 600; flex-shrink: 0;
+}
+.action-priority.high { background: #2d0a0a; color: #ef4444; }
+.action-priority.med { background: #1c1917; color: #f59e0b; }
+.action-priority.low { background: #0c1929; color: #3b82f6; }
+.action-meta { font-size: 11px; color: #4b5563; margin-top: 2px; }
+.action-add-bar {
+  display: flex; gap: 8px; padding: 16px;
+  border-top: 1px solid #1f2937; flex-wrap: wrap;
+}
+.action-add-bar input {
+  flex: 1; min-width: 200px; background: #1a1f2e; border: 1px solid #2a3040;
+  color: #e0e6f0; padding: 10px 14px; border-radius: 8px; font-size: 13px;
+}
+.action-add-bar input::placeholder { color: #4b5563; }
+.action-add-bar select {
+  background: #1a1f2e; border: 1px solid #2a3040; color: #e0e6f0;
+  padding: 10px; border-radius: 8px; font-size: 13px;
+}
+.action-add-bar button {
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  color: white; border: none; padding: 10px 20px; border-radius: 8px;
+  font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+}
+.action-add-bar button:hover { opacity: 0.9; }
+.carried-badge {
+  display: inline-block; font-size: 10px; padding: 2px 6px;
+  border-radius: 4px; background: #1a1f2e; color: #6b7280; margin-left: 8px;
+}
+.carried-section {
+  background: #0f1520; border: 1px dashed #2a3040; border-radius: 10px;
+  padding: 16px; margin-bottom: 16px;
+}
+.carried-section h4 { font-size: 12px; color: #6b7280; margin-bottom: 8px; }
+.action-empty {
+  padding: 24px; text-align: center; color: #6b7280; font-size: 13px;
+}
+.analysis-stat-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px; margin-bottom: 16px;
+}
+.analysis-stat {
+  background: #0f1520; border-radius: 8px; padding: 14px; text-align: center;
+}
+.analysis-stat .label { font-size: 11px; color: #6b7280; margin-bottom: 4px; }
+.analysis-stat .value { font-size: 18px; font-weight: 700; }
+.analysis-divider { border: none; border-top: 1px solid #1f2937; margin: 16px 0; }
 </style>
 </head>
 <body>
@@ -273,6 +372,7 @@ tr:last-child td { border-bottom: none; }
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
     <button class="tab-btn" onclick="switchTab('transactions')">📋 Daftar Transaksi</button>
+    <button class="tab-btn" onclick="switchTab('analysis')">📋 Analisis & Rencana</button>
   </div>
 
   <!-- TAB: DASHBOARD -->
@@ -400,6 +500,60 @@ tr:last-child td { border-bottom: none; }
   <div style="color:#6b7280;font-size:12px;margin-top:12px;text-align:center;" id="txCount"></div>
 </div>
 
+<!-- TAB: ANALYSIS & ACTION PLAN -->
+<div id="tab-analysis" class="tab-content">
+
+  <!-- OVERVIEW STATS ROW -->
+  <div class="analysis-stat-row" id="analysisStats"></div>
+
+  <!-- ANALYSIS CARD -->
+  <div class="analysis-card">
+    <div class="analysis-header-row">
+      <h3>📈 Analisis Bisnis</h3>
+      <div>
+        <button class="btn-sm" onclick="regenerateAnalysis()" id="btnRegenAnalysis">🔄 Generate Ulang</button>
+        <button class="btn-sm" onclick="editAnalysis()" id="btnEditAnalysis">✏️ Edit</button>
+        <button class="btn-sm primary" onclick="saveAnalysis()" id="btnSaveAnalysis" style="display:none;">💾 Simpan</button>
+      </div>
+    </div>
+    <div id="analysisContent">
+      <p style="color:#6b7280;">Memuat analisis...</p>
+    </div>
+  </div>
+
+  <!-- CARRIED OVER FROM LAST MONTH -->
+  <div id="carriedSection" style="display:none;"></div>
+
+  <!-- ACTION PLAN -->
+  <div class="analysis-card">
+    <div class="analysis-header-row">
+      <h3>✅ Rencana Tindakan</h3>
+      <span style="font-size:11px;color:#6b7280;" id="actionProgress"></span>
+    </div>
+    <div id="actionList">
+      <div class="action-empty">Belum ada rencana tindakan. Tambahkan di bawah.</div>
+    </div>
+    <div class="action-add-bar">
+      <input type="text" id="newActionInput" placeholder="Tulis rencana tindakan..." />
+      <select id="newActionPriority">
+        <option value="high">🔴 High</option>
+        <option value="med" selected>🟡 Medium</option>
+        <option value="low">🔵 Low</option>
+      </select>
+      <button onclick="addAction()">➕ Tambah</button>
+    </div>
+  </div>
+
+  <!-- CONTEXT LOG -->
+  <div class="analysis-card" id="contextLogCard" style="display:none;">
+    <div class="analysis-header-row">
+      <h3>📜 Konteks dari Bulan Sebelumnya</h3>
+    </div>
+    <div id="contextLogContent"></div>
+  </div>
+
+</div>
+
 <!-- VALUATION MODAL -->
 <div class="modal-overlay" id="valuationModal">
   <div class="modal">
@@ -500,6 +654,20 @@ const DATA = {
       {creditor:"Supplier Boyolali (batch 1)",amount:29000000,notes:"400kg @ Rp115rb, DP 17jt"},
       {creditor:"Supplier Boyolali (batch 3)",amount:14750000,notes:"140kg @ Rp135rb, estimasi"}
     ]
+  },
+  action_plan: {
+    default_actions: {
+      "2026-07": [
+        { id: "act-001", text: "Tagih Hakka Restoran INV00006 — Rp1.350.000 (tempo 24 Jul)", priority: "high" },
+        { id: "act-002", text: "Tagih Hakka Restoran INV00009 — Rp2.520.000 (tempo 29 Jul)", priority: "high" },
+        { id: "act-003", text: "Tagih Hakka Restoran INV00010 — Rp2.475.000 (tempo 30 Jul)", priority: "high" },
+        { id: "act-004", text: "Bayar hutang Supplier Boyolali batch 1 — Rp29.000.000", priority: "high" },
+        { id: "act-005", text: "Konfirmasi hutang Supplier Boyolali batch 3 — Rp14.750.000", priority: "med" },
+        { id: "act-006", text: "Evaluasi margin per supplier — fokus pada supplier margin >40%", priority: "med" },
+        { id: "act-007", text: "Cek stok lobster hidup & frozen di rumah (total 23kg)", priority: "low" },
+        { id: "act-008", text: "Follow up penjualan eceran Boyolali 2kg @ Rp450rb (tempo)", priority: "med" }
+      ]
+    }
   }
 };
 
@@ -510,6 +678,7 @@ function filterData() {
   let tx = DATA.transactions;
   if (f !== 'all') tx = tx.filter(t => t.date.startsWith(f));
   renderDashboard(tx);
+  renderAnalysis();
 }
 
 function renderDashboard(tx) {
@@ -805,6 +974,7 @@ function switchTab(name) {
   document.querySelector(`.tab-btn[onclick*="${name}"]`).classList.add('active');
   document.getElementById(`tab-${name}`).classList.add('active');
   if (name === 'transactions') renderTransactions();
+  if (name === 'analysis') renderAnalysis();
 }
 
 // ═══════════════════════════════════════════
@@ -948,6 +1118,353 @@ document.getElementById('pinInput').addEventListener('keydown', function(e) {
 
 // Init — no longer auto-render, wait for PIN
 document.getElementById('lastUpdate').textContent = DATA.last_updated;
+
+// ═══════════════════════════════════════════
+// ANALYSIS & ACTION PLAN
+// ═══════════════════════════════════════════
+
+function getCurrentMonth() {
+  const f = document.getElementById('monthFilter').value;
+  return f !== 'all' ? f : '2026-07';
+}
+
+function getActionPlan(month) {
+  const key = 'lobster_action_plan_' + month;
+  const stored = localStorage.getItem(key);
+  if (stored) {
+    try { return JSON.parse(stored); } catch(e) {}
+  }
+  if (DATA.action_plan && DATA.action_plan.default_actions && DATA.action_plan.default_actions[month]) {
+    return JSON.parse(JSON.stringify(DATA.action_plan.default_actions[month]));
+  }
+  return [];
+}
+
+function saveActionPlan(month, actions) {
+  const key = 'lobster_action_plan_' + month;
+  localStorage.setItem(key, JSON.stringify(actions));
+}
+
+function getCheckmarks(month) {
+  const key = 'lobster_action_done_' + month;
+  const stored = localStorage.getItem(key);
+  if (stored) {
+    try { return JSON.parse(stored); } catch(e) {}
+  }
+  return {};
+}
+
+function saveCheckmarks(month, marks) {
+  const key = 'lobster_action_done_' + month;
+  localStorage.setItem(key, JSON.stringify(marks));
+}
+
+function getAnalysisText(month) {
+  const stored = localStorage.getItem('lobster_analysis_' + month);
+  if (stored) return stored;
+  return null;
+}
+
+function saveAnalysisText(month, text) {
+  localStorage.setItem('lobster_analysis_' + month, text);
+}
+
+function renderAnalysis() {
+  const month = getCurrentMonth();
+  const tx = month === 'all' ? DATA.transactions : DATA.transactions.filter(function(t) { return t.date.startsWith(month); });
+
+  renderAnalysisStats(tx, month);
+
+  let analysisText = getAnalysisText(month);
+  if (!analysisText) {
+    analysisText = generateAnalysis(tx, month);
+    saveAnalysisText(month, analysisText);
+  }
+  document.getElementById('analysisContent').innerHTML = '<div style="line-height:1.6;font-size:13px;">' + analysisText.replace(/\n/g, '<br>') + '</div>';
+  document.getElementById('btnEditAnalysis').style.display = 'inline-block';
+  document.getElementById('btnSaveAnalysis').style.display = 'none';
+  document.getElementById('btnRegenAnalysis').style.display = 'inline-block';
+
+  renderCarriedOver(month);
+  renderActionPlan(month);
+  renderContextLog(month);
+}
+
+function renderAnalysisStats(tx, month) {
+  const totalIncome = tx.filter(function(t) { return t.type === 'income'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+  const totalCOGS = tx.filter(function(t) { return t.type === 'cogs'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+  const totalExpense = tx.filter(function(t) { return t.type === 'expense'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+  const totalOutstanding = tx.filter(function(t) { return t.type === 'income' && t.payment_status !== 'lunas'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+  const totalDebt = DATA.inventory_notes.hutang_tercatat.reduce(function(s,d) { return s + d.amount; }, 0);
+
+  const monthLabel = month === 'all' ? 'Semua Bulan' : new Date(month + '-01').toLocaleDateString('id', { month: 'long', year: 'numeric' });
+
+  document.getElementById('analysisStats').innerHTML =
+    '<div class="analysis-stat"><div class="label">' + monthLabel + '</div><div class="value" style="color:#22c55e;">' + fmt(totalIncome) + '</div><div style="font-size:11px;color:#6b7280;">Pendapatan</div></div>' +
+    '<div class="analysis-stat"><div class="label">' + monthLabel + '</div><div class="value" style="color:#3b82f6;">' + fmt(totalCOGS) + '</div><div style="font-size:11px;color:#6b7280;">Pembelian/COGS</div></div>' +
+    '<div class="analysis-stat"><div class="label">' + monthLabel + '</div><div class="value" style="color:#8b5cf6;">' + fmt(totalExpense) + '</div><div style="font-size:11px;color:#6b7280;">Biaya Operasional</div></div>' +
+    '<div class="analysis-stat"><div class="label">' + monthLabel + '</div><div class="value" style="color:#f59e0b;">' + fmt(totalOutstanding) + '</div><div style="font-size:11px;color:#6b7280;">Piutang Belum Tertagih</div></div>' +
+    '<div class="analysis-stat"><div class="label">' + monthLabel + '</div><div class="value" style="color:#ef4444;">' + fmt(totalDebt) + '</div><div style="font-size:11px;color:#6b7280;">Hutang Supplier</div></div>';
+}
+
+function generateAnalysis(tx, month) {
+  const totalIncome = tx.filter(function(t) { return t.type === 'income'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+  const totalCOGS = tx.filter(function(t) { return t.type === 'cogs'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+  const totalExpense = tx.filter(function(t) { return t.type === 'expense'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+  const totalAssetRaw = tx.filter(function(t) { return t.type === 'asset'; }).reduce(function(s,t) { return s + t.amount; }, 0);
+  const incomeCount = tx.filter(function(t) { return t.type === 'income'; }).length;
+  const txCount = tx.length;
+
+  const incomeBySrc = {};
+  tx.filter(function(t) { return t.type === 'income'; }).forEach(function(t) {
+    const src = (DATA.chart_of_accounts[t.account_code] && DATA.chart_of_accounts[t.account_code].name) || t.account_code;
+    incomeBySrc[src] = (incomeBySrc[src] || 0) + t.amount;
+  });
+
+  const expenseByCat = {};
+  tx.filter(function(t) { return t.type === 'expense'; }).forEach(function(t) {
+    const cat = (DATA.chart_of_accounts[t.account_code] && DATA.chart_of_accounts[t.account_code].name) || t.account_code;
+    expenseByCat[cat] = (expenseByCat[cat] || 0) + t.amount;
+  });
+
+  const outstandingIncome = tx.filter(function(t) { return t.type === 'income' && t.payment_status !== 'lunas'; });
+  const outstandingTotal = outstandingIncome.reduce(function(s,t) { return s + t.amount; }, 0);
+  const totalDebt = DATA.inventory_notes.hutang_tercatat.reduce(function(s,d) { return s + d.amount; }, 0);
+  const totalStock = DATA.inventory_notes.stok_tercatat.reduce(function(s,i) { return s + i.qty_kg; }, 0);
+
+  const soldKg = 244;
+  const avgHPP = 115000;
+  const estimatedCOGS = soldKg * avgHPP;
+  const grossProfit = totalIncome - estimatedCOGS;
+  const grossMargin = totalIncome > 0 ? ((grossProfit / totalIncome) * 100).toFixed(1) : 0;
+
+  const monthLabel = month === 'all' ? 'Semua data' : new Date(month + '-01').toLocaleDateString('id', { month: 'long', year: 'numeric' });
+
+  var lines = [];
+  lines.push('\ud83e\udd9e Analisis Bisnis \u2014 ' + monthLabel);
+  lines.push('');
+  lines.push('\ud83d\udcca Ringkasan Keuangan:');
+  lines.push('   Pendapatan: ' + fmt(totalIncome) + ' (' + incomeCount + ' transaksi)');
+  lines.push('   HPP (est.): ' + fmt(estimatedCOGS) + ' \u2014 \u00b1' + soldKg + 'kg terjual @ Rp' + avgHPP.toLocaleString() + '/kg');
+  lines.push('   Laba Kotor: ' + fmt(grossProfit) + ' (margin ' + grossMargin + '%)');
+  lines.push('   Biaya Operasional: ' + fmt(totalExpense));
+  lines.push('   Investasi Aset: ' + fmt(totalAssetRaw));
+  lines.push('');
+  lines.push('\ud83d\udcb0 Rincian Pendapatan:');
+  var srcKeys = Object.keys(incomeBySrc);
+  for (var si = 0; si < srcKeys.length; si++) {
+    lines.push('   \u2022 ' + srcKeys[si] + ': ' + fmt(incomeBySrc[srcKeys[si]]));
+  }
+  lines.push('');
+  lines.push('\ud83d\udcb8 Rincian Biaya:');
+  var expKeys = Object.keys(expenseByCat);
+  if (expKeys.length === 0) {
+    lines.push('   (belum ada data)');
+  } else {
+    for (var ei = 0; ei < expKeys.length; ei++) {
+      lines.push('   \u2022 ' + expKeys[ei] + ': ' + fmt(expenseByCat[expKeys[ei]]));
+    }
+  }
+  lines.push('');
+  lines.push('\u26a0\ufe0f  Status Piutang & Hutang:');
+  lines.push('   \u2022 Piutang belum tertagih: ' + fmt(outstandingTotal) + ' (' + outstandingIncome.length + ' transaksi)');
+  lines.push('   \u2022 Hutang Supplier: ' + fmt(totalDebt));
+  lines.push('');
+  lines.push('\ud83d\udce6 Status Stok: ' + totalStock + 'kg lobster di berbagai lokasi');
+  lines.push('');
+  lines.push('\ud83c\udfaf Rekomendasi:');
+  lines.push('   1. Segera tagih piutang Hakka Restoran sebelum tempo habis');
+  lines.push('   2. Prioritaskan bayar hutang supplier untuk jaga hubungan baik');
+  lines.push('   3. Fokus ke supplier dengan margin terbaik (Jogja +165%, Boyolali +30-233%)');
+  lines.push('   4. Manfaatkan pembayaran dollar untuk transaksi besar (kurs lebih stabil)');
+  lines.push('   5. Evaluasi stok di Salatiga & Boyolali \u2014 percepat penjualan stok yang lama');
+  lines.push('');
+  lines.push('\ud83d\udccc ' + txCount + ' transaksi tercatat bulan ini.');
+
+  return lines.join('\n');
+}
+
+function editAnalysis() {
+  const month = getCurrentMonth();
+  const tx = month === 'all' ? DATA.transactions : DATA.transactions.filter(function(t) { return t.date.startsWith(month); });
+  const currentText = getAnalysisText(month) || generateAnalysis(tx, month);
+  document.getElementById('analysisContent').innerHTML = '<textarea class="analysis-edit" id="analysisEditBox">' + currentText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</textarea>';
+  document.getElementById('btnEditAnalysis').style.display = 'none';
+  document.getElementById('btnSaveAnalysis').style.display = 'inline-block';
+  document.getElementById('btnRegenAnalysis').style.display = 'none';
+}
+
+function saveAnalysis() {
+  const month = getCurrentMonth();
+  const text = document.getElementById('analysisEditBox').value;
+  saveAnalysisText(month, text);
+  document.getElementById('analysisContent').innerHTML = '<div style="line-height:1.6;font-size:13px;">' + text.replace(/\n/g, '<br>') + '</div>';
+  document.getElementById('btnEditAnalysis').style.display = 'inline-block';
+  document.getElementById('btnSaveAnalysis').style.display = 'none';
+  document.getElementById('btnRegenAnalysis').style.display = 'inline-block';
+}
+
+function regenerateAnalysis() {
+  const month = getCurrentMonth();
+  const tx = month === 'all' ? DATA.transactions : DATA.transactions.filter(function(t) { return t.date.startsWith(month); });
+  const text = generateAnalysis(tx, month);
+  saveAnalysisText(month, text);
+  document.getElementById('analysisContent').innerHTML = '<div style="line-height:1.6;font-size:13px;">' + text.replace(/\n/g, '<br>') + '</div>';
+}
+
+function renderActionPlan(month) {
+  const actions = getActionPlan(month);
+  const checkmarks = getCheckmarks(month);
+
+  if (actions.length === 0) {
+    document.getElementById('actionList').innerHTML = '<div class="action-empty">\u2705 Semua rencana sudah selesai! Tambahkan rencana baru di bawah.</div>';
+    document.getElementById('actionProgress').textContent = '';
+    return;
+  }
+
+  const total = actions.length;
+  var doneCount = 0;
+  var doneKeys = Object.keys(checkmarks);
+  for (var dk = 0; dk < doneKeys.length; dk++) {
+    if (checkmarks[doneKeys[dk]]) doneCount++;
+  }
+
+  document.getElementById('actionProgress').textContent = doneCount + '/' + total + ' selesai';
+
+  var priorityLabel = { high: '\ud83d\udd34 High', med: '\ud83d\udfe1 Medium', low: '\ud83d\udd35 Low' };
+
+  var html = '';
+  for (var ai = 0; ai < actions.length; ai++) {
+    var a = actions[ai];
+    var isDone = checkmarks[a.id] || false;
+    var textClass = isDone ? 'action-text done' : 'action-text';
+    html += '<div class="action-item">' +
+      '<input type="checkbox" class="action-check" ' + (isDone ? 'checked' : '') + ' onchange="toggleAction(\'' + a.id + '\')" />' +
+      '<div>' +
+        '<div class="' + textClass + '">' + a.text + '</div>' +
+        '<div class="action-meta"><span class="action-priority ' + a.priority + '">' + (priorityLabel[a.priority] || '\ud83d\udfe1 Medium') + '</span></div>' +
+      '</div>' +
+    '</div>';
+  }
+  document.getElementById('actionList').innerHTML = html;
+}
+
+function toggleAction(itemId) {
+  const month = getCurrentMonth();
+  const checkmarks = getCheckmarks(month);
+  checkmarks[itemId] = !checkmarks[itemId];
+  saveCheckmarks(month, checkmarks);
+
+  const doneKey = 'lobster_done_log_' + month;
+  var doneLog = {};
+  try { var parsed = JSON.parse(localStorage.getItem(doneKey)); if (parsed) doneLog = parsed; } catch(e) {}
+
+  if (checkmarks[itemId]) {
+    const actions = getActionPlan(month);
+    var found = null;
+    for (var fi = 0; fi < actions.length; fi++) {
+      if (actions[fi].id === itemId) { found = actions[fi]; break; }
+    }
+    if (found) {
+      doneLog[itemId] = { text: found.text, completed_at: new Date().toISOString() };
+      localStorage.setItem(doneKey, JSON.stringify(doneLog));
+    }
+  } else {
+    delete doneLog[itemId];
+    localStorage.setItem(doneKey, JSON.stringify(doneLog));
+  }
+
+  renderActionPlan(month);
+  renderContextLog(month);
+}
+
+function addAction() {
+  const month = getCurrentMonth();
+  const input = document.getElementById('newActionInput');
+  const priority = document.getElementById('newActionPriority').value;
+  const text = input.value.trim();
+  if (!text) return;
+
+  const actions = getActionPlan(month);
+  const nextId = 'act-' + String(Date.now()).slice(-6);
+  actions.push({ id: nextId, text: text, priority: priority });
+  saveActionPlan(month, actions);
+
+  input.value = '';
+  input.focus();
+  renderActionPlan(month);
+}
+
+function renderCarriedOver(month) {
+  if (month === 'all' || month === '2026-07') {
+    document.getElementById('carriedSection').style.display = 'none';
+    return;
+  }
+
+  const parts = month.split('-');
+  var prevYear = parseInt(parts[0]);
+  var prevMonth = parseInt(parts[1]) - 1;
+  if (prevMonth === 0) { prevMonth = 12; prevYear--; }
+  var prevMonthStr = prevYear + '-' + (prevMonth < 10 ? '0' : '') + prevMonth;
+
+  const doneKey = 'lobster_done_log_' + prevMonthStr;
+  var doneLog = {};
+  try { var parsed = JSON.parse(localStorage.getItem(doneKey)); if (parsed) doneLog = parsed; } catch(e) {}
+
+  var doneArr = [];
+  var logKeys = Object.keys(doneLog);
+  for (var lk = 0; lk < logKeys.length; lk++) {
+    doneArr.push(doneLog[logKeys[lk]]);
+  }
+
+  if (doneArr.length === 0) {
+    document.getElementById('carriedSection').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('carriedSection').style.display = 'block';
+  var carriedHtml = '<div class="carried-section">' +
+    '<h4>\ud83d\udce6 Selesai Bulan Lalu (' + prevMonthStr + ') \u2014 ' + doneArr.length + ' item</h4>';
+  for (var di = 0; di < doneArr.length; di++) {
+    carriedHtml += '<div style="font-size:12px;color:#6b7280;padding:4px 0;">\u2705 ' + doneArr[di].text + '</div>';
+  }
+  carriedHtml += '<div style="font-size:11px;color:#4b5563;margin-top:8px;border-top:1px solid #1f2937;padding-top:8px;">' +
+    'Item-item ini sudah selesai bulan lalu. Analisis bulan ini sudah mempertimbangkan progres tersebut.' +
+    '</div></div>';
+  document.getElementById('carriedSection').innerHTML = carriedHtml;
+}
+
+function renderContextLog(month) {
+  if (month === 'all') {
+    document.getElementById('contextLogCard').style.display = 'none';
+    return;
+  }
+
+  const doneKey = 'lobster_done_log_' + month;
+  var doneLog = {};
+  try { var parsed = JSON.parse(localStorage.getItem(doneKey)); if (parsed) doneLog = parsed; } catch(e) {}
+
+  var doneArr = [];
+  var logKeys = Object.keys(doneLog);
+  for (var lk = 0; lk < logKeys.length; lk++) {
+    doneArr.push(doneLog[logKeys[lk]]);
+  }
+
+  if (doneArr.length === 0) {
+    document.getElementById('contextLogCard').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('contextLogCard').style.display = 'block';
+  var ctxHtml = '<p style="font-size:12px;color:#6b7280;margin-bottom:8px;">Item yang sudah dicentang bulan ini akan dibawa sebagai konteks ke bulan depan:</p>';
+  for (var ci = 0; ci < doneArr.length; ci++) {
+    var d = doneArr[ci];
+    var date = new Date(d.completed_at);
+    var dateStr = date.toLocaleDateString('id', { day: 'numeric', month: 'short' });
+    ctxHtml += '<div style="font-size:12px;color:#4b5563;padding:3px 0;">\u2705 ' + d.text + ' <span style="color:#6b7280;">\u2014 ' + dateStr + '</span></div>';
+  }
+  document.getElementById('contextLogContent').innerHTML = ctxHtml;
+}
 </script>
 </body>
 </html>
