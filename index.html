@@ -1580,13 +1580,15 @@ function openTrend() {
 function exitTrend() {
   document.getElementById('monthFilter').style.display = '';
   document.querySelector('.tabs').style.display = '';
+  // Reset ALL tab contents — remove inline display so CSS class .active works again
+  document.querySelectorAll('.tab-content').forEach(function(c) { c.style.display = ''; });
   var activeTab = document.querySelector('.tab-btn.active');
   var tabName = 'dashboard';
   if (activeTab) {
     var match = activeTab.getAttribute('onclick');
     if (match) tabName = match.replace("switchTab('", "").replace("')", "");
   }
-  document.getElementById('tab-' + tabName).style.display = 'block';
+  document.getElementById('tab-' + tabName).classList.add('active');
   document.getElementById('trendView').classList.remove('active');
 }
 
