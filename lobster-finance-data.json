@@ -497,7 +497,7 @@
       "type": "income",
       "payment_status": "tempo",
       "notes": "Tempo 10 hari (28 Jul). Sisa tagihan Rp 33.300.000",
-      "source_file": "INV00008.pdf"
+      "source_file": "2026-07-21 - Hakka Restoran 180kg (INV00008) - Semarang - TEMPO.pdf"
     },
     {
       "id": "TRX-044",
@@ -508,7 +508,7 @@
       "type": "income",
       "payment_status": "tempo",
       "notes": "Tempo 10 hari (30 Jul). File tertulis INV00010, seharusnya INV00011. Frozen.",
-      "source_file": "INV00011.pdf"
+      "source_file": "2026-07-23 - Hakka Restoran 3kg frozen (INV00011) - Semarang - TEMPO.pdf"
     },
     {
       "id": "TRX-045",
