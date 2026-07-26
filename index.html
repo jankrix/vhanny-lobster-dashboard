@@ -802,6 +802,15 @@ function renderDashboard(tx) {
   const loanData = DATA.transactions.filter(t => t.account_code === '2.02');
   const loanTotal = loanData.reduce((s,t) => s + t.amount, 0);
 
+  // Dividend: 10% of profit in period 9 Jul - 9 Okt
+  const divStart = '2026-07-09', divEnd = '2026-10-09';
+  const divTx = DATA.transactions.filter(t => t.date >= divStart && t.date <= divEnd);
+  const divIncome = divTx.filter(t => t.type === 'income').reduce((s,t) => s + t.amount, 0);
+  const divCOGS = divTx.filter(t => t.type === 'cogs').reduce((s,t) => s + t.amount, 0);
+  const divExpense = divTx.filter(t => t.type === 'expense').reduce((s,t) => s + t.amount, 0);
+  const divProfit = divIncome - divCOGS - divExpense;
+  const dividendAmount = divProfit > 0 ? Math.round(divProfit * 0.1) : 0;
+
   // Income by account
   const incomeByAcct = {};
   byType.income.forEach(t => {
@@ -866,7 +875,7 @@ function renderDashboard(tx) {
       <div class="kpi-sub">${DATA.inventory_notes.hutang_tercatat.length} supplier</div></div>
     <div class="kpi-card loan"><div class="kpi-label">Pinjaman Teman</div>
       <div class="kpi-value orange">${fmt(loanTotal)}</div>
-      <div class="kpi-sub">+ 10% dividen profit berjalan (9 Jul-9 Okt)</div></div>
+      <div class="kpi-sub">+ dividen 10%: <strong>${fmt(dividendAmount)}</strong> (profit ${fmt(divProfit)} periode 9 Jul-9 Okt)</div></div>
     <div class="kpi-card asset"><div class="kpi-label">Aset Tetap</div>
       <div class="kpi-value cyan">${fmt(totalAsset)}</div>
       <div class="kpi-sub">Kolam + Freezer + Peralatan</div></div>
