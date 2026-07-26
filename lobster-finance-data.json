@@ -526,11 +526,11 @@
       "id": "TRX-046",
       "date": "2026-07-26",
       "account_code": "2.02",
-      "description": "Pinjaman dari teman — Rp 30jt, kembali Sep + 10% dividen",
+      "description": "Pinjaman dari teman — Rp 30jt, kembali 9 Okt + 10% dividen profit",
       "amount": 30000000,
       "type": "liability",
       "payment_status": "tempo",
-      "notes": "Jatuh tempo Sep 2026. Pokok Rp 30jt + dividen 10% dari profit.",
+      "notes": "Jatuh tempo 9 Okt 2026. Pokok Rp 30jt + dividen 10% dari profit periode 9 Jul-9 Okt.",
       "source_file": "Catatan client 26 Jul"
     }
   ],
@@ -545,7 +545,7 @@
       { "creditor": "Supplier Salatiga (batch 300kg)", "amount": 14450000, "notes": "300kg @ Rp 115.000, DP 20.050.000" },
       { "creditor": "Supplier Boyolali (batch 400kg)", "amount": 29000000, "notes": "400kg @ Rp 120.000, DP 17.000.000" },
       { "creditor": "Supplier Boyolali (frozen 250kg)", "amount": 9885000, "notes": "250kg frozen @ Rp 79.540, DP 10.000.000" },
-      { "creditor": "Teman (pinjaman)", "amount": 30000000, "notes": "Pinjaman Rp 30jt, jatuh tempo Sep + 10% dividen dari profit" }
+      { "creditor": "Teman (pinjaman)", "amount": 30000000, "notes": "Pinjaman Rp 30jt, jatuh tempo 9 Okt + 10% dividen profit 9 Jul-9 Okt" }
     ]
   },
   "amortization": {
