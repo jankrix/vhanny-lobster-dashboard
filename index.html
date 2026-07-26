@@ -698,7 +698,8 @@ const DATA = {
     "1.02": { name: "Freezer (Aset)", type: "asset" },
     "1.03": { name: "Peralatan", type: "asset" },
     "1.04": { name: "Sewa Dibayar Dimuka", type: "asset" },
-    "2.01": { name: "Hutang Supplier", type: "liability" }
+    "2.01": { name: "Hutang Supplier", type: "liability" },
+    "2.02": { name: "Hutang Pinjaman", type: "liability" },
   },
   transactions: [
     {id:"TRX-001",date:"2026-07-01",account_code:"1.01",description:"Pembuatan kolam (4x3)",amount:10250000,type:"asset",payment_status:"lunas",notes:"",source_file:"Catatan Baru.pdf"},
@@ -745,7 +746,8 @@ const DATA = {
     {id:"TRX-042",date:"2026-07-31",account_code:"6.10",description:"Beban Sewa Juli 2026 (1/7)",amount:10714285,type:"expense",payment_status:"lunas",notes:"Penyusutan sewa dibayar dimuka — Rp 75jt ÷ 7",source_file:"Amortisasi otomatis"},
     {id:"TRX-043",date:"2026-07-21",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 180kg @ Rp 185.000 (INV00008)",amount:33300000,type:"income",payment_status:"tempo",notes:"Tempo 10 hari (28 Jul). Sisa tagihan Rp 33.300.000",source_file:"2026-07-21 - Hakka Restoran 180kg (INV00008) - Semarang - TEMPO.pdf"},
     {id:"TRX-044",date:"2026-07-23",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 3kg frozen @ Rp 200.000 (INV00011)",amount:600000,type:"income",payment_status:"lunas",notes:"Lunas. File tertulis INV00010, seharusnya INV00011. Frozen.",source_file:"2026-07-23 - Hakka Restoran 3kg frozen (INV00011) - Semarang - TEMPO.pdf"},
-    {id:"TRX-045",date:"2026-07-26",account_code:"5.02",description:"Pembelian lobster Boyolali frozen — 250kg @ Rp 79.540/kg",amount:19885000,type:"cogs",payment_status:"dp",notes:"DP Rp 10.000.000, sisa Rp 9.885.000. Multi-petani, dianggap 1 source.",source_file:"Catatan client 26 Jul"}
+    {id:"TRX-045",date:"2026-07-26",account_code:"5.02",description:"Pembelian lobster Boyolali frozen — 250kg @ Rp 79.540/kg",amount:19885000,type:"cogs",payment_status:"dp",notes:"DP Rp 10.000.000, sisa Rp 9.885.000. Multi-petani, dianggap 1 source.",source_file:"Catatan client 26 Jul"},
+    {id:"TRX-046",date:"2026-07-26",account_code:"2.02",description:"Pinjaman dari teman — Rp 30jt, kembali Sep + 10% dividen",amount:30000000,type:"liability",payment_status:"tempo",notes:"Jatuh tempo Sep 2026. Pokok Rp 30jt + dividen 10% (Rp 3jt) = Rp 33jt.",source_file:"Catatan client 26 Jul"}
   ],
   inventory_notes: {
     stok_tercatat: [
@@ -757,7 +759,8 @@ const DATA = {
     hutang_tercatat: [
       {creditor:"Supplier Salatiga (batch 300kg)",amount:14450000,notes:"300kg @ Rp115rb, DP 20.050.000"},
       {creditor:"Supplier Boyolali (batch 400kg)",amount:29000000,notes:"400kg @ Rp120rb, DP 17.000.000"},
-      {creditor:"Supplier Boyolali (frozen 250kg)",amount:9885000,notes:"250kg frozen @ Rp79.540, DP 10.000.000"}
+      {creditor:"Supplier Boyolali (frozen 250kg)",amount:9885000,notes:"250kg frozen @ Rp79.540, DP 10.000.000"},
+      {creditor:"Teman (pinjaman)",amount:30000000,notes:"Pinjaman Rp 30jt, jatuh tempo Sep + 10% dividen"}
     ]
   },
   action_plan: {
@@ -767,7 +770,8 @@ const DATA = {
         { id: "act-002", text: "Bayar hutang Supplier Salatiga — Rp14.450.000", priority: "high" },
         { id: "act-003", text: "Bayar hutang Supplier Boyolali (400kg) — Rp29.000.000", priority: "high" },
         { id: "act-004", text: "Bayar sisa DP Supplier Boyolali (frozen 250kg) — Rp9.885.000", priority: "high" },
-        { id: "act-005", text: "Cek stok lobster (total 540kg)", priority: "low" }
+        { id: "act-005", text: "Bayar pinjaman teman — Rp33jt (Sep, pokok + 10% dividen)", priority: "high" },
+        { id: "act-006", text: "Cek stok lobster (total 540kg)", priority: "low" }
       ]
     }
   }

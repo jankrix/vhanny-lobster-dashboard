@@ -7,6 +7,7 @@
     "1.03": { "name": "Peralatan", "type": "asset", "description": "Alat-alat tahan lama (sealer, dll)" },
     "1.04": { "name": "Sewa Dibayar Dimuka", "type": "asset", "description": "Sewa perusahaan dibayar di muka" },
     "2.01": { "name": "Hutang Supplier", "type": "liability", "description": "Hutang ke supplier lobster" },
+    "2.02": { "name": "Hutang Pinjaman", "type": "liability", "description": "Pinjaman dari pihak ketiga" },
     "4.01": { "name": "Penjualan — Restoran", "type": "income", "description": "Penjualan lobster ke restoran" },
     "4.02": { "name": "Penjualan — Eceran", "type": "income", "description": "Penjualan lobster langsung ke konsumen" },
     "4.03": { "name": "Penjualan — Dollar/Ekspor", "type": "income", "description": "Penjualan dibayar dollar" },
@@ -520,6 +521,17 @@
       "payment_status": "dp",
       "notes": "DP Rp 10.000.000, sisa Rp 9.885.000. Multi-petani, dianggap 1 source.",
       "source_file": "Catatan client 26 Jul"
+    },
+    {
+      "id": "TRX-046",
+      "date": "2026-07-26",
+      "account_code": "2.02",
+      "description": "Pinjaman dari teman — Rp 30jt, kembali Sep + 10% dividen",
+      "amount": 30000000,
+      "type": "liability",
+      "payment_status": "tempo",
+      "notes": "Jatuh tempo Sep 2026. Pokok Rp 30jt + dividen 10% (Rp 3jt) = Rp 33jt.",
+      "source_file": "Catatan client 26 Jul"
     }
   ],
   "inventory_notes": {
@@ -532,7 +544,8 @@
     "hutang_tercatat": [
       { "creditor": "Supplier Salatiga (batch 300kg)", "amount": 14450000, "notes": "300kg @ Rp 115.000, DP 20.050.000" },
       { "creditor": "Supplier Boyolali (batch 400kg)", "amount": 29000000, "notes": "400kg @ Rp 120.000, DP 17.000.000" },
-      { "creditor": "Supplier Boyolali (frozen 250kg)", "amount": 9885000, "notes": "250kg frozen @ Rp 79.540, DP 10.000.000" }
+      { "creditor": "Supplier Boyolali (frozen 250kg)", "amount": 9885000, "notes": "250kg frozen @ Rp 79.540, DP 10.000.000" },
+      { "creditor": "Teman (pinjaman)", "amount": 30000000, "notes": "Pinjaman Rp 30jt, jatuh tempo Sep + 10% dividen" }
     ]
   },
   "amortization": {
