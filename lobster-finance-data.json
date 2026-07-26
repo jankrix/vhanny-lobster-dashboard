@@ -407,8 +407,8 @@
       "description": "Penjualan ke Hakka Restoran — 4kg frozen @ Rp 180.000",
       "amount": 720000,
       "type": "income",
-      "payment_status": "tempo",
-      "notes": "Campuran",
+      "payment_status": "lunas",
+      "notes": "",
       "source_file": "Catatan Baru.pdf"
     },
     {
@@ -418,8 +418,8 @@
       "description": "Penjualan eceran — Golden Tiger 2kg frozen @ Rp 180.000",
       "amount": 360000,
       "type": "income",
-      "payment_status": "tempo",
-      "notes": "Campuran",
+      "payment_status": "lunas",
+      "notes": "",
       "source_file": "Catatan Baru.pdf"
     },
     {
@@ -429,8 +429,8 @@
       "description": "Penjualan eceran — Cici 4kg frozen @ Rp 180.000",
       "amount": 720000,
       "type": "income",
-      "payment_status": "tempo",
-      "notes": "Campuran",
+      "payment_status": "lunas",
+      "notes": "",
       "source_file": "Catatan Baru.pdf"
     },
     {
@@ -506,8 +506,8 @@
       "description": "Penjualan ke Hakka Restoran — 3kg frozen @ Rp 200.000 (INV00011)",
       "amount": 600000,
       "type": "income",
-      "payment_status": "tempo",
-      "notes": "Tempo 10 hari (30 Jul). File tertulis INV00010, seharusnya INV00011. Frozen.",
+      "payment_status": "lunas",
+      "notes": "Lunas. File tertulis INV00010, seharusnya INV00011. Frozen.",
       "source_file": "2026-07-23 - Hakka Restoran 3kg frozen (INV00011) - Semarang - TEMPO.pdf"
     },
     {
