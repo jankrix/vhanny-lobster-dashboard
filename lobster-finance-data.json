@@ -8,6 +8,7 @@
     "1.04": { "name": "Sewa Dibayar Dimuka", "type": "asset", "description": "Sewa perusahaan dibayar di muka" },
     "2.01": { "name": "Hutang Supplier", "type": "liability", "description": "Hutang ke supplier lobster" },
     "2.02": { "name": "Hutang Pinjaman", "type": "liability", "description": "Pinjaman dari pihak ketiga" },
+    "3.01": { "name": "Modal Pemilik", "type": "equity", "description": "Setoran modal dari owner" },
     "4.01": { "name": "Penjualan — Restoran", "type": "income", "description": "Penjualan lobster ke restoran" },
     "4.02": { "name": "Penjualan — Eceran", "type": "income", "description": "Penjualan lobster langsung ke konsumen" },
     "4.03": { "name": "Penjualan — Dollar/Ekspor", "type": "income", "description": "Penjualan dibayar dollar" },
@@ -519,7 +520,7 @@
       "amount": 19885000,
       "type": "cogs",
       "payment_status": "dp",
-      "notes": "DP Rp 10.000.000, sisa Rp 9.885.000. Multi-petani, dianggap 1 source.",
+      "notes": "DP Rp 10.000.000 dari setoran modal owner, sisa Rp 9.885.000 dari profit.",
       "source_file": "Catatan client 26 Jul"
     },
     {
@@ -531,6 +532,17 @@
       "type": "liability",
       "payment_status": "tempo",
       "notes": "Jatuh tempo 9 Okt 2026. Pokok Rp 30jt + dividen 10% dari profit periode 9 Jul-9 Okt.",
+      "source_file": "Catatan client 26 Jul"
+    },
+    {
+      "id": "TRX-047",
+      "date": "2026-07-26",
+      "account_code": "3.01",
+      "description": "Setoran modal owner (untuk DP Boyolali frozen 250kg)",
+      "amount": 10000000,
+      "type": "equity",
+      "payment_status": "lunas",
+      "notes": "Injeksi modal pribadi owner. DP Boyolali frozen 250kg Rp 19.885.000.",
       "source_file": "Catatan client 26 Jul"
     }
   ],
