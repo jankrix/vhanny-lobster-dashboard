@@ -574,7 +574,7 @@
       { "item": "Boyolali (hidup)", "qty_kg": 114, "source": "Sisa batch 400kg, deduct 31kg mati (pindah ke campuran)" },
       { "item": "Boyolali (frozen baru)", "qty_kg": 250, "source": "Pembelian 26 Jul" },
       { "item": "Jogja (hidup)", "qty_kg": 15, "source": "Sisa batch 19kg" },
-      { "item": "Bekasi (fresh/frozen)", "qty_kg": 24, "source": "Sisa dari 30kg. 2kg frozen sudah terjual" },
+      { "item": "Bekasi (fresh/frozen)", "qty_kg": 22, "source": "Sisa dari 30kg. 6kg dibuang, 2kg frozen terjual 27 Jul @ Rp 180rb." },
       { "item": "Campuran (mati/frozen — diskon)", "qty_kg": 25, "source": "Dari 31kg mati (deduct Boyolali). 6kg terjual 26 Jul @ Rp 180rb, sisa 25kg. Harga normal Rp 400rb/kg." }
     ],
     "hutang_tercatat": [
