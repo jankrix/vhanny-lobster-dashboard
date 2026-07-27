@@ -751,16 +751,18 @@ const DATA = {
     {id:"TRX-044",date:"2026-07-23",account_code:"4.01",description:"Penjualan ke Hakka Restoran — 3kg frozen @ Rp 200.000 (INV00011)",amount:600000,type:"income",payment_status:"lunas",notes:"Lunas. File tertulis INV00010, seharusnya INV00011. Frozen.",source_file:"2026-07-23 - Hakka Restoran 3kg frozen (INV00011) - Semarang - TEMPO.pdf"},
     {id:"TRX-045",date:"2026-07-26",account_code:"5.02",description:"Pembelian lobster Boyolali frozen — 250kg @ Rp 79.540/kg",amount:19885000,type:"cogs",payment_status:"dp",notes:"DP Rp 10.000.000 dari setoran modal owner, sisa Rp 9.885.000 dari profit.",source_file:"Catatan client 26 Jul"},
     {id:"TRX-046",date:"2026-07-26",account_code:"2.02",description:"Pinjaman dari teman — Rp 30jt, kembali 9 Okt + 10% dividen profit",amount:30000000,type:"liability",payment_status:"tempo",notes:"Jatuh tempo 9 Okt 2026. Pokok Rp 30jt + dividen 10% dari profit periode 9 Jul-9 Okt.",source_file:"Catatan client 26 Jul"},
-    {id:"TRX-047",date:"2026-07-26",account_code:"3.01",description:"Setoran modal owner (untuk DP Boyolali frozen 250kg)",amount:10000000,type:"equity",payment_status:"lunas",notes:"Injeksi modal pribadi owner. DP Boyolali frozen 250kg Rp 19.885.000.",source_file:"Catatan client 26 Jul"}
+    {id:"TRX-047",date:"2026-07-26",account_code:"3.01",description:"Setoran modal owner (untuk DP Boyolali frozen 250kg)",amount:10000000,type:"equity",payment_status:"lunas",notes:"Injeksi modal pribadi owner. DP Boyolali frozen 250kg Rp 19.885.000.",source_file:"Catatan client 26 Jul"},
+    {id:"TRX-048",date:"2026-07-26",account_code:"4.02",description:"Penjualan eceran — 6kg lobster mati campuran @ Rp 180.000",amount:1080000,type:"income",payment_status:"lunas",notes:"Harga diskon (mati), normal Rp 400rb/kg. Dari 31kg mati campuran.",source_file:"Catatan client 26 Jul"},
+    {id:"TRX-049",date:"2026-07-27",account_code:"4.02",description:"Penjualan eceran — 2kg frozen Bekasi @ Rp 180.000",amount:360000,type:"income",payment_status:"lunas",notes:"Harga diskon (frozen). Stok existing Bekasi.",source_file:"Catatan client 27 Jul"}
   ],
   inventory_notes: {
     stok_tercatat: [
       {item:"Salatiga (hidup)",qty_kg:130,source:"Sisa batch 300kg"},
-      {item:"Boyolali (hidup)",qty_kg:145,source:"Sisa batch 400kg"},
+      {item:"Boyolali (hidup)",qty_kg:114,source:"Sisa batch 400kg, deduct 31kg mati (pindah ke campuran)"},
       {item:"Boyolali (frozen baru)",qty_kg:250,source:"Pembelian 26 Jul"},
       {item:"Jogja (hidup)",qty_kg:15,source:"Sisa batch 19kg"},
       {item:"Bekasi (fresh/frozen)",qty_kg:24,source:"Sisa dari 30kg. 2kg frozen sudah terjual"},
-      {item:"Campuran (mati/frozen \u2014 diskon)",qty_kg:25,source:"Sisa 31kg mati, 6kg sudah terjual. Harga jual Rp 180rb/kg"}
+      {item:"Campuran (mati/frozen \u2014 diskon)",qty_kg:25,source:"Dari 31kg mati (deduct Boyolali). 6kg terjual 26 Jul @ Rp 180rb, sisa 25kg. Harga normal Rp 400rb/kg."}
     ],
     hutang_tercatat: [
       {creditor:"Supplier Salatiga (batch 300kg)",amount:14450000,notes:"300kg @ Rp115rb, DP 20.050.000"},

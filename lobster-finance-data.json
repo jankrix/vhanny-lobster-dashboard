@@ -544,16 +544,38 @@
       "payment_status": "lunas",
       "notes": "Injeksi modal pribadi owner. DP Boyolali frozen 250kg Rp 19.885.000.",
       "source_file": "Catatan client 26 Jul"
+    },
+    {
+      "id": "TRX-048",
+      "date": "2026-07-26",
+      "account_code": "4.02",
+      "description": "Penjualan eceran — 6kg lobster mati campuran @ Rp 180.000",
+      "amount": 1080000,
+      "type": "income",
+      "payment_status": "lunas",
+      "notes": "Harga diskon (mati), normal Rp 400rb/kg. Dari 31kg mati campuran.",
+      "source_file": "Catatan client 26 Jul"
+    },
+    {
+      "id": "TRX-049",
+      "date": "2026-07-27",
+      "account_code": "4.02",
+      "description": "Penjualan eceran — 2kg frozen Bekasi @ Rp 180.000",
+      "amount": 360000,
+      "type": "income",
+      "payment_status": "lunas",
+      "notes": "Harga diskon (frozen). Stok existing Bekasi.",
+      "source_file": "Catatan client 27 Jul"
     }
   ],
   "inventory_notes": {
     "stok_tercatat": [
       { "item": "Salatiga (hidup)", "qty_kg": 130, "source": "Sisa batch 300kg" },
-      { "item": "Boyolali (hidup)", "qty_kg": 145, "source": "Sisa batch 400kg" },
+      { "item": "Boyolali (hidup)", "qty_kg": 114, "source": "Sisa batch 400kg, deduct 31kg mati (pindah ke campuran)" },
       { "item": "Boyolali (frozen baru)", "qty_kg": 250, "source": "Pembelian 26 Jul" },
       { "item": "Jogja (hidup)", "qty_kg": 15, "source": "Sisa batch 19kg" },
       { "item": "Bekasi (fresh/frozen)", "qty_kg": 24, "source": "Sisa dari 30kg. 2kg frozen sudah terjual" },
-      { "item": "Campuran (mati/frozen — diskon)", "qty_kg": 25, "source": "Sisa 31kg mati, 6kg sudah terjual. Harga jual Rp 180rb/kg" }
+      { "item": "Campuran (mati/frozen — diskon)", "qty_kg": 25, "source": "Dari 31kg mati (deduct Boyolali). 6kg terjual 26 Jul @ Rp 180rb, sisa 25kg. Harga normal Rp 400rb/kg." }
     ],
     "hutang_tercatat": [
       { "creditor": "Supplier Salatiga (batch 300kg)", "amount": 14450000, "notes": "300kg @ Rp 115.000, DP 20.050.000" },
