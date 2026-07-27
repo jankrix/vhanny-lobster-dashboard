@@ -160,6 +160,23 @@ body {
   background: #111827; border: 1px solid #1f2937; border-radius: 12px;
   padding: 20px;
 }
+
+/* STOCK BREAKDOWN */
+.stock-breakdown {
+  background: #111827; border: 1px solid #1f2937; border-radius: 12px;
+  padding: 20px; margin-bottom: 24px;
+}
+.stock-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+.stock-card {
+  background: #0d1117; border-radius: 10px; padding: 14px;
+  border-left: 3px solid #6b7280;
+}
+.stock-name { font-size: 13px; color: #8892a4; margin-bottom: 4px; }
+.stock-qty { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+.stock-source { font-size: 11px; color: #4b5563; line-height: 1.3; }
 .chart-card h3 { font-size: 14px; color: #8892a4; margin-bottom: 16px; }
 .chart-card canvas { max-height: 280px; }
 
@@ -442,6 +459,9 @@ tr:last-child td { border-bottom: none; }
 
   <!-- KPI CARDS -->
   <div class="kpi-grid" id="kpiGrid"></div>
+
+  <!-- STOCK BREAKDOWN -->
+  <div class="stock-breakdown" id="stockGrid"></div>
 
   <!-- CHARTS -->
   <div class="charts-grid">
@@ -886,6 +906,31 @@ function renderDashboard(tx) {
       <div class="kpi-value cyan">${fmt(totalAsset)}</div>
       <div class="kpi-sub">Kolam + Freezer + Peralatan</div></div>
   `;
+
+  // ─── STOCK BREAKDOWN PER REGION ───
+  const stockColors = {
+    'hidup': '#22c55e', 'frozen': '#3b82f6', 'fresh': '#06b6d4',
+    'mati': '#ef4444', 'diskon': '#f59e0b', 'campuran': '#f59e0b'
+  };
+  const stockIcon = {
+    'hidup': '🟢', 'frozen': '🔵', 'fresh': '🩵',
+    'mati': '🔴', 'diskon': '🟡', 'campuran': '🟡'
+  };
+  let stockHtml = '<div class="stock-breakdown"><h3 style="font-size:14px;color:#8892a4;margin-bottom:12px">📦 Stok Per Wilayah</h3><div class="stock-grid">';
+  DATA.inventory_notes.stok_tercatat.forEach(s => {
+    let icon = '📦';
+    let color = '#6b7280';
+    for (const [key, val] of Object.entries(stockIcon)) {
+      if (s.item.toLowerCase().includes(key)) { icon = val; color = stockColors[key]; break; }
+    }
+    stockHtml += `<div class="stock-card" style="border-left:3px solid ${color}">
+      <div class="stock-name">${icon} ${s.item}</div>
+      <div class="stock-qty" style="color:${color}">${s.qty_kg} kg</div>
+      <div class="stock-source">${s.source}</div>
+    </div>`;
+  });
+  stockHtml += '</div></div>';
+  document.getElementById('stockGrid').innerHTML = stockHtml;
 
   // CHART: Revenue by Source
   const revCtx = document.getElementById('revenueChart').getContext('2d');
