@@ -695,6 +695,17 @@
       "payment_status": "lunas",
       "notes": "",
       "source_file": "Catatan Bulanan - VhannyLobster (29 Juli).xlsx"
+    },
+    {
+      "id": "TRX-053",
+      "date": "2026-08-31",
+      "account_code": "6.10",
+      "description": "Beban Sewa Agustus 2026 (2/7)",
+      "amount": 10714285,
+      "type": "expense",
+      "payment_status": "lunas",
+      "notes": "Penyusutan sewa dibayar dimuka — bulan 2/7",
+      "source_file": "Auto-amortisasi"
     }
   ],
   "inventory_notes": {
